@@ -17,11 +17,11 @@ class LEGOApiClient {
         }
 
         if (!empty($yearFrom)) {
-            self::$url .= 'min_year=2024' . (!empty($yearTo) ? '&' : '');
+            self::$url .= 'min_year=' . $yearFrom . (!empty($yearTo) ? '&' : '');
         }
 
         if (!empty($yearTo)) {
-            self::$url .= 'max_year=2024';
+            self::$url .= 'max_year=' . $yearTo;
         }
 
         $keyString = (!empty($yearFrom) || !empty($yearTo) ? '&' : '?') . 'key=' . Config::get('app.lego_api_key');
@@ -37,11 +37,11 @@ class LEGOApiClient {
         }
 
         if (!empty($yearFrom)) {
-            self::$url .= 'min_year=2024' . (!empty($yearTo) ? '&' : '');
+            self::$url .= 'min_year=' . $yearFrom . (!empty($yearTo) ? '&' : '');
         }
 
         if (!empty($yearTo)) {
-            self::$url .= 'max_year=2024';
+            self::$url .= 'max_year=' . $yearTo;
         }
 
         $pageString = '&page=' . $page . '&page_size=1000';

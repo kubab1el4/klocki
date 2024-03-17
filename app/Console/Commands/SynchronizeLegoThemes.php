@@ -20,7 +20,7 @@ class SynchronizeLegoThemes extends Command {
      *
      * @var string
      */
-    protected $description = 'Pobranie z API informacji do bazy danych';
+    protected $description = 'Pobranie z API informacji o themes do bazy danych';
 
     /**
      * Execute the console command.
