@@ -123,4 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'lego_api_key' => 'b15023bec13c5c7bae0f8c62537eaa70',
+
 ];
