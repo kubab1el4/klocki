@@ -1,14 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useIntl } from "react-intl";
 import { tProduct } from "./Product.t";
-import {
-    Box,
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    CardMedia,
-} from "@mui/material";
+import { Box, Card, CardActionArea, CardContent } from "@mui/material";
+import { NotificationAddOutlined } from "@mui/icons-material";
+import { ProductPopover } from "./ProductPopover";
 
 export type ProductProps = {
     id: string;
@@ -27,38 +22,80 @@ export const Product: React.FC<ProductProps> = ({
     price,
     imgURL,
 }) => {
+    const setNumber = id.split("-")[0];
     const intl = useIntl();
+    const anchorRef = useRef<HTMLButtonElement>(null);
+    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+    const handelPopoverButtonClick = () => {
+        setIsPopoverOpen((prevState) => !prevState);
+    };
+
     return (
         <li>
-            <Card className="mx-auto max-w-[700px] flex gap-[20px] mt-[40px]">
-                <Box
-                    sx={{ height: 200, width: 300 }}
-                    className="flex justify-center align-center"
-                >
-                    <CardMedia
-                        image={imgURL}
-                        title={`image of ${setName} Lego set`}
-                        sx={{ height: 150, width: 200 }}
+            <Card
+                className="max-w-64 border-grey-300 border-2 border-solid m-4 relative"
+                sx={{ boxShadow: "none", borderRadius: "0.375rem" }}
+            >
+                <CardContent className="p-4 group">
+                    <button
+                        ref={anchorRef}
+                        className="absolute right-2 top-2 bg-white rounded-full p-2"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handelPopoverButtonClick();
+                        }}
+                    >
+                        <NotificationAddOutlined />
+                    </button>
+                    <ProductPopover
+                        open={isPopoverOpen}
+                        anchorEl={anchorRef.current}
+                        handelClose={() => {
+                            setIsPopoverOpen(false);
+                        }}
                     />
-                </Box>
-                <CardContent>
-                    <h2>
-                        {intl.formatMessage(tProduct.ProductName, {
-                            theme,
-                            setNumber: id,
-                            setName,
-                        })}
-                    </h2>
-                    <p>
-                        {intl.formatMessage(tProduct.Price, {
-                            price,
-                            pieces,
-                            priceForOnePiece: (price / pieces).toFixed(2),
-                        })}
-                    </p>
-                    <CardActions>
-                        <Button variant="contained">Idz do okazji</Button>
-                    </CardActions>
+                    <Box className="flex justify-center items-center w-full bg-gray-100 rounded-md">
+                        <img
+                            src={imgURL}
+                            alt={`image of ${setName} Lego set`}
+                            className="w-[80%] group-hover:scale-110  transition ease-in-out duration-300 p-3"
+                        />
+                    </Box>
+                    <CardContent>
+                        <h2 className="font-medium">
+                            {intl.formatMessage(tProduct.ProductName, {
+                                theme,
+                                setNumber,
+                                setName,
+                            })}
+                        </h2>
+                        <div className="text-slate-600 text-sm">
+                            <p>
+                                {intl.formatMessage(tProduct.AdditionalInfo, {
+                                    pieces,
+                                })}
+                            </p>
+                            <p>
+                                {" "}
+                                {intl.formatMessage(tProduct.PriceForOnePiece, {
+                                    priceForOnePiece: (price / pieces).toFixed(
+                                        2
+                                    ),
+                                })}
+                            </p>
+                        </div>
+                        <div className="mt-6">
+                            <span className="font-semibold text-lg">
+                                {intl.formatMessage(tProduct.Price, { price })}
+                            </span>
+                            <p className="text-slate-600">
+                                {intl.formatMessage(
+                                    tProduct.ComparePricesInStores,
+                                    { stores: 5 }
+                                )}
+                            </p>
+                        </div>
+                    </CardContent>
                 </CardContent>
             </Card>
         </li>
