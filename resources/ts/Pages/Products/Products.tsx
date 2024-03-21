@@ -14,7 +14,7 @@ export const Products: React.FC = () => {
     ] as ProductProps[];
 
     return (
-        <ul>
+        <ul className="m-auto  w-fit">
             {products.map(({ id, theme, setName, imgURL, pieces, price }) => (
                 <Product
                     id={id}
