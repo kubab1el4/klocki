@@ -18,7 +18,7 @@ export const tProduct = defineMessages({
     },
     Price: {
         id: "b7d9e9a1-2f4f-4b9f-8b2f-2b9f3c3e9f3a",
-        defaultMessage: "Od: {price} zł",
+        defaultMessage: "Od: {price}",
         description: "Price",
     },
     ComparePricesInStores: {

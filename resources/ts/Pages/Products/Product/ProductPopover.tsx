@@ -30,13 +30,13 @@ export const ProductPopover: React.FC<ProductPopoverProps> = ({
             }}
             onClose={handelClose}
         >
-            <div className="flex flex-col items-start p-1 gap-1 text-sm">
-                <button className="flex gap-2 w-full">
-                    <ControlPoint />
+            <div className="flex flex-col items-start gap-1 text-sm">
+                <button className="flex gap-2 w-full hover:bg-gray-100 p-1">
+                    <ControlPoint fontSize={"small"} />
                     {intl.formatMessage(tProductPopover.AddToWishlist)}
                 </button>
-                <button className="flex gap-2 w-full">
-                    <NotificationsNoneOutlined />
+                <button className="flex gap-2 w-full hover:bg-gray-100 p-1">
+                    <NotificationsNoneOutlined fontSize={"small"} />
                     {intl.formatMessage(tProductPopover.PriceAlert)}
                 </button>
             </div>

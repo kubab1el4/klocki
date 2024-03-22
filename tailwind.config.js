@@ -6,7 +6,14 @@ export default {
         "./resources/**/*.tsx",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                transparent: "transparent",
+                current: "currentColor",
+                white: "#ffffff",
+                primary: "#ec4899",
+            },
+        },
     },
     plugins: [],
 };
