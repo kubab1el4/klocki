@@ -2,13 +2,21 @@
 
 namespace App\Crawlers;
 
+use App\Models\CatalogPrice;
+use Exception;
+use Facebook\WebDriver\WebDriverKeys;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Panther\Client;
 
 class CatalogPriceCrawler {
 
     public static function execute() {
-        $client = Client::createChromeClient();
+        $client = Client::createChromeClient(null, [
+            '--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+            '--window-size=1200,1100',
+            '--headless',
+            '--disable-gpu',
+]);
         $link = 'https://brickset.com';
         $client->request('GET', $link . '/sets');
 
@@ -27,28 +35,41 @@ class CatalogPriceCrawler {
         foreach($optionArray as $option) {
             $client->request('GET', $link . $option);
             $crawler = $client->getCrawler();
+            $client->waitFor('.pagelength')->filter('#body > div.outerwrap > div > div > aside:nth-child(2) > div.resultsfilter > ul.pagelength > li:nth-child(4)')->click();
 
             do {
-                $crawler->filter('article')->each(function (Crawler $x) use (&$client, &$readSets) {
+                $client->waitFor('article')->filter('article')->each(function (Crawler $x) use (&$client, &$readSets) {
                     $header = $x->filter('.meta > h1 > a > span')->text();
-                    $readSets[rtrim($header, ':')] = 0;
-                    $priceButton = $x->filter('div.meta > div:nth-child(5) > dl > dd:nth-child(6) > a');
-                    if ($priceButton->text('default', true) !== 'default') {
-                        $client->waitFor('div.meta > div:nth-child(5) > dl > dd:nth-child(6) > a');
-                        $x->filter('div.meta > div:nth-child(5) > dl > dd:nth-child(6) > a')->click();
 
-                        $crawler = $client->waitFor('#ajaxContainer > table > tbody > tr:nth-child(15) > td:nth-child(1) > img');
-                        $row = $crawler->filter('#ajaxContainer > table > tbody > tr:nth-child(15) > td:nth-child(2)');
+                    if ($x->filter('a[href^="prices"]')->text('default', true) !== 'default') {
+                        $x->filter('a[href^="prices"]')->click();
 
-                        $readSets[rtrim($header, ':')] = $row->text();
-dump($readSets);
-                        $x->filter('#body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable.ui-resizable > div.ui-dialog-titlebar.ui-widget-header.ui-corner-all.ui-helper-clearfix > a')->click();
+                        $crawler = $client->waitFor('img[src*="/flags/PL"]');
+                        $row = $crawler->filter('img[src*="/flags/PL"]')->ancestors()->eq(1)->children()->eq(2);
+
+                        $catPrice = new CatalogPrice;
+                        $catPrice->importData([
+                            'set_num' => rtrim($header, ':'),
+                            'price' => $row->text()
+                        ]);
+                        $catPrice->save();
+                        dump($catPrice->set_num . ' - ' . $catPrice->price);
+                        $client->getKeyboard()->pressKey(WebDriverKeys::ESCAPE);
+                        $client->waitForInvisibility('#ajaxContainer');
                     }
                 });
-                if ($crawler->filter('#body > div.outerwrap > div > div > div:nth-child(4) > ul > li.next > a')->text('default', true) !== 'default') {
-                    $crawler->filter('#body > div.outerwrap > div > div > div:nth-child(4) > ul > li.next > a')->click();
+
+                try {
+                    sleep(rand(5,15));
+                    $crawler = $client->reload();
+                    if ($crawler->filter('li[class="next"] > a')->eq(1)->text('default', true) !== 'default') {
+                        $crawler->filter('li[class="next"] > a')->eq(1)->click();
+                    }
+                } catch (Exception $e) {
+                    dd($client->getCrawler()->html());
                 }
-            } while ($crawler->filter('#body > div.outerwrap > div > div > div:nth-child(4) > ul > li.next > a')->text('default', true) !== 'default');
+
+            } while ($client->waitFor('article')->filter('li[class="next"] > a')->eq(1)->text('default', true) !== 'default');
         }
     }
 }
