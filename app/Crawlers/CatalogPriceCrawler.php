@@ -44,16 +44,20 @@ class CatalogPriceCrawler {
                     if ($x->filter('a[href^="prices"]')->text('default', true) !== 'default') {
                         $x->filter('a[href^="prices"]')->click();
 
-                        $crawler = $client->waitFor('img[src*="/flags/PL"]');
-                        $row = $crawler->filter('img[src*="/flags/PL"]')->ancestors()->eq(1)->children()->eq(2);
+                        $client->waitFor('#ajaxContainer > table');
+                        $hasPolishPrice = $client->getCrawler()->filter('img[src*="/flags/PL"]')->text('default', true);
+                        if ($hasPolishPrice !== 'default') {
+                            $crawler = $client->waitFor('img[src*="/flags/PL"]');
+                            $row = $crawler->filter('img[src*="/flags/PL"]')->ancestors()->eq(1)->children()->eq(2);
 
-                        $catPrice = new CatalogPrice;
-                        $catPrice->importData([
-                            'set_num' => rtrim($header, ':'),
-                            'price' => $row->text()
-                        ]);
-                        $catPrice->save();
-                        dump($catPrice->set_num . ' - ' . $catPrice->price);
+                            $catPrice = new CatalogPrice;
+                            $catPrice->importData([
+                                'set_num' => rtrim($header, ':'),
+                                'price' => $row->text()
+                            ]);
+                            $catPrice->save();
+                            dump($catPrice->set_num . ' - ' . $catPrice->price);
+                        }
                         $client->getKeyboard()->pressKey(WebDriverKeys::ESCAPE);
                         $client->waitForInvisibility('#ajaxContainer');
                     }
