@@ -12,8 +12,13 @@ class ThemeResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'parent_name' => $this->parent->name,
+            'parent_id' => $this->parent_id,
+            'name' => $this->name
+        ];
     }
 }

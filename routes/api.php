@@ -10,9 +10,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('set/{id}', [SetController::class, 'show']);
-
 Route::get('sets', [SetController::class, 'index']);
 
-Route::get('theme/{id}', [ThemeController::class, 'show']);
 
+Route::get('theme/{id}', [ThemeController::class, 'show']);
+Route::get('theme/{id}/sets', [ThemeController::class, 'show']);
 Route::get('themes', [ThemeController::class, 'index']);
