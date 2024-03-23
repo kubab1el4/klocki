@@ -2,26 +2,33 @@ import React, { useEffect, useRef } from "react";
 import { useIntl } from "react-intl";
 import { tProduct } from "./Product.t";
 import { Box, Card, CardContent } from "@mui/material";
-import { NotificationAddOutlined } from "@mui/icons-material";
+import {
+    ImageNotSupported,
+    NotificationAddOutlined,
+} from "@mui/icons-material";
 import { ProductPopover } from "./ProductPopover";
 
 export type ProductProps = {
     setName: string;
-    theme: string;
     pieces: number;
     price: number;
-    imgURL: string;
+    imgURL: string | null;
     setNumber: string;
     id: number;
+    catalogPrice: string | null;
+    themeName: string;
+    year: number;
 };
 
 export const Product: React.FC<ProductProps> = ({
     setName,
-    theme,
     pieces,
     price,
     imgURL,
     setNumber,
+    catalogPrice,
+    themeName,
+    year,
 }) => {
     const intl = useIntl();
     const setNumberAltered =
@@ -31,18 +38,9 @@ export const Product: React.FC<ProductProps> = ({
     const handelPopoverButtonClick = () => {
         setIsPopoverOpen((prevState) => !prevState);
     };
-    const [themeName, setThemeName] = React.useState("");
-
-    useEffect(() => {
-        const getThemeName = async () => {
-            const response = await fetch(
-                `http://127.0.0.1:8000/api/theme/${theme}`
-            );
-            const data = await response.json();
-            setThemeName(data.data.name);
-        };
-        getThemeName();
-    }, []);
+    const catalogPriceAltered = catalogPrice
+        ? `${catalogPrice.slice(2)} zł`
+        : "-";
 
     return (
         <li>
@@ -72,11 +70,15 @@ export const Product: React.FC<ProductProps> = ({
                         }}
                     />
                     <Box className="flex justify-center h-36 items-center bg-gray-100 rounded-md">
-                        <img
-                            src={imgURL}
-                            alt={`image of ${setName} Lego set`}
-                            className="max-w-[100%] max-h-[100%] group-hover:scale-110  transition ease-in-out duration-300 p-3"
-                        />
+                        {imgURL ? (
+                            <img
+                                src={imgURL}
+                                alt={`image of ${setName} Lego set`}
+                                className="max-w-[100%] max-h-[100%] group-hover:scale-110  transition ease-in-out duration-300 p-3"
+                            />
+                        ) : (
+                            <ImageNotSupported />
+                        )}
                     </Box>
                     <CardContent>
                         <div>
@@ -106,10 +108,20 @@ export const Product: React.FC<ProductProps> = ({
                                         }
                                     )}
                                 </p>
+                                <p>
+                                    {intl.formatMessage(tProduct.CatalogPrice, {
+                                        catalogPrice: catalogPriceAltered,
+                                    })}
+                                </p>
+                                <p>
+                                    {intl.formatMessage(tProduct.Year, {
+                                        year,
+                                    })}
+                                </p>
                             </div>
                         </div>
                     </CardContent>
-                    <div className="p-4 absolute bottom-0 mb-4">
+                    <Box className="p-4 absolute bottom-0 mb-4">
                         <span className="font-semibold text-lg">
                             {intl.formatMessage(tProduct.Price, {
                                 price: (
@@ -125,7 +137,7 @@ export const Product: React.FC<ProductProps> = ({
                                 { stores: 5 }
                             )}
                         </p>
-                    </div>
+                    </Box>
                 </CardContent>
             </Card>
         </li>

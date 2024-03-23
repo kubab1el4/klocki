@@ -26,4 +26,14 @@ export const tProduct = defineMessages({
         defaultMessage: "Porównaj ceny w {stores} sklepach",
         description: "Button to compare prices in stores",
     },
+    CatalogPrice: {
+        id: "b7d9e9a1-2f4f-4b9f-8b2f-2b9f3c3e9f3a",
+        defaultMessage: "Cena katalogowa: {catalogPrice}",
+        description: "Catalog price",
+    },
+    Year: {
+        id: "b7d9e9a1-2f4f-4b9f-8b2f-2b9f3c3e9f3a",
+        defaultMessage: "Rok prezentacji: {year}",
+        description: "Year of the product",
+    },
 });

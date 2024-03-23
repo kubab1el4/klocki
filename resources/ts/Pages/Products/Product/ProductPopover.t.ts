@@ -8,7 +8,7 @@ export const tProductPopover = defineMessages({
     },
     PriceAlert: {
         id: "b7d9e9a1-2f4f-4b9f-8b2f-2b9f3c3e9f3a",
-        defaultMessage: "Powiadom o oczekiwanej ceny",
+        defaultMessage: "Powiadom o oczekiwanej cenie",
         description: "Price alert",
     },
 });
