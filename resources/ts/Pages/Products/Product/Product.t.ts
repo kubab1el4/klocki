@@ -3,7 +3,7 @@ import { defineMessages } from "react-intl";
 export const tProduct = defineMessages({
     ProductName: {
         id: "1a1f9ee8-14a3-4a49-bcc4-80b5eec4b2e3",
-        defaultMessage: "Lego {theme} {setName} {setNumber}",
+        defaultMessage: "Lego {theme} {setNumber}: {setName}",
         description: "Header for the product",
     },
     AdditionalInfo: {

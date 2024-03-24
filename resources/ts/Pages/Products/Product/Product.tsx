@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useIntl } from "react-intl";
 import { tProduct } from "./Product.t";
 import { Box, Card, CardContent } from "@mui/material";
@@ -7,6 +7,7 @@ import {
     NotificationAddOutlined,
 } from "@mui/icons-material";
 import { ProductPopover } from "./ProductPopover";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export type ProductProps = {
     setName: string;
@@ -71,7 +72,7 @@ export const Product: React.FC<ProductProps> = ({
                     />
                     <Box className="flex justify-center h-36 items-center bg-gray-100 rounded-md">
                         {imgURL ? (
-                            <img
+                            <LazyLoadImage
                                 src={imgURL}
                                 alt={`image of ${setName} Lego set`}
                                 className="max-w-[100%] max-h-[100%] group-hover:scale-110  transition ease-in-out duration-300 p-3"

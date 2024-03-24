@@ -1,5 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Product, ProductProps } from "./Product/Product";
+import { CircularProgress, Pagination } from "@mui/material";
+import { useNavigate, useParams } from "react-router";
+
 type productsData = {
     id: number;
     name: string;
@@ -12,18 +15,27 @@ type productsData = {
 }[];
 
 export const Products: React.FC = () => {
-    const [productsData, setProducts] = React.useState<productsData>([]);
+    const { page: currentPage } = useParams<{ page: string }>();
+    console.log(currentPage);
+    const navigate = useNavigate();
+    const [productsData, setProducts] = useState<productsData>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const handelPageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+        navigate(`/products/page/${value}`);
+    };
 
     useEffect(() => {
         const fetchProducts = async () => {
+            setIsLoading(true);
             const response = await fetch(
-                `${import.meta.env.VITE_APP_URL}/api/sets?page=990`
+                `${import.meta.env.VITE_APP_URL}/api/sets?page=${currentPage}`
             );
             const data = await response.json();
+            setIsLoading(false);
             setProducts(data.data);
         };
         fetchProducts();
-    }, []);
+    }, [currentPage]);
 
     const products = productsData.map(
         ({
@@ -49,33 +61,54 @@ export const Products: React.FC = () => {
     ) as ProductProps[];
 
     return (
-        <ul className="m-auto w-fit grid grid-cols-3">
-            {products.map(
-                ({
-                    id,
-                    setName,
-                    imgURL,
-                    pieces,
-                    price,
-                    setNumber,
-                    catalogPrice,
-                    themeName,
-                    year,
-                }) => (
-                    <Product
-                        id={id}
-                        setNumber={setNumber}
-                        key={id}
-                        price={price}
-                        setName={setName}
-                        imgURL={imgURL}
-                        pieces={pieces}
-                        catalogPrice={catalogPrice}
-                        themeName={themeName}
-                        year={year}
-                    />
-                )
+        <div className="mx-auto w-fit my-8">
+            {isLoading ? (
+                <div className="w-full h-full flex items-center justify-center">
+                    <CircularProgress color="primary" />
+                </div>
+            ) : (
+                <ul className="grid grid-cols-3">
+                    {products.map(
+                        ({
+                            id,
+                            setName,
+                            imgURL,
+                            pieces,
+                            price,
+                            setNumber,
+                            catalogPrice,
+                            themeName,
+                            year,
+                        }) => (
+                            <Product
+                                id={id}
+                                setNumber={setNumber}
+                                key={id}
+                                price={price}
+                                setName={setName}
+                                imgURL={imgURL}
+                                pieces={pieces}
+                                catalogPrice={catalogPrice}
+                                themeName={themeName}
+                                year={year}
+                            />
+                        )
+                    )}
+                </ul>
             )}
-        </ul>
+            <Pagination
+                count={1119}
+                color="primary"
+                onChange={handelPageChange}
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    my: 4,
+                }}
+                size="large"
+                siblingCount={2}
+                page={currentPage ? +currentPage : 1}
+            />
+        </div>
     );
 };
