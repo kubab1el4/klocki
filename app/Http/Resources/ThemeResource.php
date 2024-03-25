@@ -16,7 +16,7 @@ class ThemeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'parent_name' => $this->parent->name,
+            'parent_name' => $this->parent->name ?? null,
             'parent_id' => $this->parent_id,
             'name' => $this->name
         ];

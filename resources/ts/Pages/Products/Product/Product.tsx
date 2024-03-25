@@ -1,13 +1,13 @@
-import React, { useRef } from "react";
-import { useIntl } from "react-intl";
-import { tProduct } from "./Product.t";
-import { Box, Card, CardContent } from "@mui/material";
 import {
     ImageNotSupported,
     NotificationAddOutlined,
 } from "@mui/icons-material";
-import { ProductPopover } from "./ProductPopover";
+import { Box, Card, CardContent } from "@mui/material";
+import React, { useRef } from "react";
+import { useIntl } from "react-intl";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { tProduct } from "./Product.t";
+import { ProductPopover } from "./ProductPopover";
 
 export type ProductProps = {
     setName: string;
@@ -55,7 +55,7 @@ export const Product: React.FC<ProductProps> = ({
                 <CardContent className="p-4 group">
                     <button
                         ref={anchorRef}
-                        className="absolute z-[2] right-2 top-2 bg-white rounded-full p-2 hover:bg-gray-200  transition ease-in-out duration-300"
+                        className="absolute text-gray-500 z-[2] right-2 top-2 bg-white rounded-full p-2 hover:bg-gray-200 hover:text-gray-700 transition ease-in-out duration-300"
                         onClick={(e) => {
                             e.preventDefault();
                             handelPopoverButtonClick();

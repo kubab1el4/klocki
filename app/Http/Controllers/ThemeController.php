@@ -10,7 +10,7 @@ class ThemeController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        return ThemeResource::collection(LEGOTheme::paginate(20));
+        return ThemeResource::collection(LEGOTheme::paginate(10));
     }
 
     /**

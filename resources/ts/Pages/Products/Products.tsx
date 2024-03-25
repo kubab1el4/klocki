@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Product, ProductProps } from "./Product/Product";
 import { CircularProgress, Pagination } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { ThemeSelector } from "../../Components/ThemesSelector/ThemeSelector";
+import { Product, ProductProps } from "./Product/Product";
 
 type productsData = {
     id: number;
@@ -61,54 +62,57 @@ export const Products: React.FC = () => {
     ) as ProductProps[];
 
     return (
-        <div className="mx-auto w-fit my-8">
-            {isLoading ? (
-                <div className="w-full h-full flex items-center justify-center">
-                    <CircularProgress color="primary" />
-                </div>
-            ) : (
-                <ul className="grid grid-cols-3">
-                    {products.map(
-                        ({
-                            id,
-                            setName,
-                            imgURL,
-                            pieces,
-                            price,
-                            setNumber,
-                            catalogPrice,
-                            themeName,
-                            year,
-                        }) => (
-                            <Product
-                                id={id}
-                                setNumber={setNumber}
-                                key={id}
-                                price={price}
-                                setName={setName}
-                                imgURL={imgURL}
-                                pieces={pieces}
-                                catalogPrice={catalogPrice}
-                                themeName={themeName}
-                                year={year}
-                            />
-                        )
-                    )}
-                </ul>
-            )}
-            <Pagination
-                count={1119}
-                color="primary"
-                onChange={handelPageChange}
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    my: 4,
-                }}
-                size="large"
-                siblingCount={2}
-                page={currentPage ? +currentPage : 1}
-            />
-        </div>
+        <>
+            <ThemeSelector />
+            <div className="mx-auto w-fit my-8">
+                {isLoading ? (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
+                    <ul className="grid grid-cols-3">
+                        {products.map(
+                            ({
+                                id,
+                                setName,
+                                imgURL,
+                                pieces,
+                                price,
+                                setNumber,
+                                catalogPrice,
+                                themeName,
+                                year,
+                            }) => (
+                                <Product
+                                    id={id}
+                                    setNumber={setNumber}
+                                    key={id}
+                                    price={price}
+                                    setName={setName}
+                                    imgURL={imgURL}
+                                    pieces={pieces}
+                                    catalogPrice={catalogPrice}
+                                    themeName={themeName}
+                                    year={year}
+                                />
+                            )
+                        )}
+                    </ul>
+                )}
+                <Pagination
+                    count={1119}
+                    color="primary"
+                    onChange={handelPageChange}
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        my: 4,
+                    }}
+                    size="large"
+                    siblingCount={2}
+                    page={currentPage ? +currentPage : 1}
+                />
+            </div>
+        </>
     );
 };
