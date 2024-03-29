@@ -22,21 +22,31 @@ export const Products: React.FC = () => {
     const [productsData, setProducts] = useState<productsData>([]);
     const [isLoading, setIsLoading] = useState(false);
     const handelPageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-        navigate(`/products/page/${value}`);
+        if (themeId) navigate(`/products/${themeId}`);
+        else navigate(`/products/page/${value}`);
     };
+    const { themeId } = useParams<{ themeId: string }>();
 
     useEffect(() => {
         const fetchProducts = async () => {
             setIsLoading(true);
-            const response = await fetch(
-                `${import.meta.env.VITE_APP_URL}/api/sets?page=${currentPage}`
-            );
+            const response = themeId
+                ? await fetch(
+                      `${
+                          import.meta.env.VITE_APP_URL
+                      }/api/theme/${themeId}/sets`
+                  )
+                : await fetch(
+                      `${
+                          import.meta.env.VITE_APP_URL
+                      }/api/sets?page=${currentPage}`
+                  );
             const data = await response.json();
             setIsLoading(false);
             setProducts(data.data);
         };
         fetchProducts();
-    }, [currentPage]);
+    }, [currentPage, themeId]);
 
     const products = productsData.map(
         ({

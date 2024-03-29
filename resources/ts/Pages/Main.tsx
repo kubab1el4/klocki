@@ -1,8 +1,8 @@
-import { IntlProvider } from "react-intl";
-import { Products } from "./Products/Products";
-import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import React from "react";
+import { IntlProvider } from "react-intl";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Products } from "./Products/Products";
 
 const Main: React.FC = () => {
     const theme = createTheme({
@@ -17,7 +17,7 @@ const Main: React.FC = () => {
     });
     const router = createBrowserRouter([
         {
-            path: "/products/page/:page?",
+            path: "/products/:themeId?/page/:page",
             element: <Products />,
         },
     ]);
