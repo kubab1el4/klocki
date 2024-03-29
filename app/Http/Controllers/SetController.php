@@ -19,6 +19,13 @@ class SetController extends Controller
      * Display the specified resource.
      */
     public function show(string $id) {
-        return new SetResource(LEGOSet::find($id));
+        return new SetResource(LEGOSet::findOrFail($id));
+    }
+
+    /**
+     * Count existing database entries.
+     */
+    public function count() {
+        return LEGOSet::all()->count();
     }
 }

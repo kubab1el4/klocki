@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SetResource;
 use App\Http\Resources\ThemeResource;
 use App\Models\LEGOTheme;
 
@@ -17,6 +18,13 @@ class ThemeController extends Controller {
      * Display the specified resource.
      */
     public function show(string $id) {
-        return new ThemeResource(LEGOTheme::find($id));
+        return new ThemeResource(LEGOTheme::findOrFail($id));
+    }
+
+    /**
+     * Display sets from theme of given id.
+     */
+    public function showSets(string $id) {
+        return SetResource::collection(LEGOTheme::findOrFail($id)->sets);
     }
 }

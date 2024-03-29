@@ -11,8 +11,9 @@ Route::get('/user', function (Request $request) {
 
 Route::get('set/{id}', [SetController::class, 'show']);
 Route::get('sets', [SetController::class, 'index']);
+Route::get('count_sets', [SetController::class, 'count']);
 
 
 Route::get('theme/{id}', [ThemeController::class, 'show']);
-Route::get('theme/{id}/sets', [ThemeController::class, 'show']);
+Route::get('theme/{id}/sets', [ThemeController::class, 'showSets']);
 Route::get('themes', [ThemeController::class, 'index']);
