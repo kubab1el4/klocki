@@ -1,6 +1,7 @@
 import { CircularProgress, Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import { ThemeSelector } from "../../Components/ThemesSelector/ThemeSelector";
 import { Product, ProductProps } from "./Product/Product";
 
@@ -16,27 +17,35 @@ type productsData = {
 }[];
 
 export const Products: React.FC = () => {
-    const { page: currentPage } = useParams<{ page: string }>();
-    console.log(currentPage);
-    const navigate = useNavigate();
     const [productsData, setProducts] = useState<productsData>([]);
+    const [searchParams, setSearchParams] = useSearchParams({});
     const [isLoading, setIsLoading] = useState(false);
     const handelPageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-        navigate(`/products/page/${value}`);
+        setSearchParams({ page: value.toString() });
     };
+    const { themeId } = useParams<{ themeId: string }>();
+    const currentPage = searchParams.get("page");
 
     useEffect(() => {
         const fetchProducts = async () => {
             setIsLoading(true);
-            const response = await fetch(
-                `${import.meta.env.VITE_APP_URL}/api/sets?page=${currentPage}`
-            );
+            const response = themeId
+                ? await fetch(
+                      `${
+                          import.meta.env.VITE_APP_URL
+                      }/api/theme/${themeId}/sets`
+                  )
+                : await fetch(
+                      `${
+                          import.meta.env.VITE_APP_URL
+                      }/api/sets?page=${currentPage}`
+                  );
             const data = await response.json();
             setIsLoading(false);
             setProducts(data.data);
         };
         fetchProducts();
-    }, [currentPage]);
+    }, [currentPage, themeId]);
 
     const products = productsData.map(
         ({
