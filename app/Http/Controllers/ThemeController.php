@@ -25,6 +25,20 @@ class ThemeController extends Controller {
      * Display sets from theme of given id.
      */
     public function showSets(string $id) {
-        return SetResource::collection(LEGOTheme::findOrFail($id)->sets);
+        return SetResource::collection(LEGOTheme::findOrFail($id)->sets()->orderBy('year', 'desc')->paginate(10));
+    }
+
+     /**
+     * Display parent of theme.
+     */
+    public function getParent(string $id) {
+        return new ThemeResource(LEGOTheme::findOrFail($id)->parent);
+    }
+
+     /**
+     * Display children of theme.
+     */
+    public function getChildren(string $id) {
+        return ThemeResource::collection(LEGOTheme::findOrFail($id)->children()->paginate(10));
     }
 }

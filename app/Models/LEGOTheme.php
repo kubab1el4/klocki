@@ -24,8 +24,13 @@ class LEGOTheme extends Model
         return $this->hasMany(LEGOSet::class, 'theme_id', 'id');
     }
 
-    public function Parent(): HasOne
+    public function parent(): HasOne
     {
         return $this->hasOne(LEGOTheme::class, 'id', 'parent_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(LEGOTheme::class, 'parent_id', 'id');
     }
 }
