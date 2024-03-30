@@ -42,7 +42,7 @@ export const ThemeSelector = () => {
                     <li
                         key={theme.id}
                         className="p-2 cursor-pointer bg-stone-700 w-fit h-fit rounded-md hover:bg-stone-800 hover:text-primary transition-colors duration-300"
-                        onClick={() => navigate(`/products/${theme.id}/page/1`)}
+                        onClick={() => navigate(`/products/${theme.id}`)}
                     >
                         {theme.name}
                     </li>

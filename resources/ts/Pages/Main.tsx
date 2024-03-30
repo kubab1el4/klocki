@@ -17,7 +17,7 @@ const Main: React.FC = () => {
     });
     const router = createBrowserRouter([
         {
-            path: "/products/:themeId?/page/:page",
+            path: "/products/:themeId?",
             element: <Products />,
         },
     ]);
@@ -27,6 +27,7 @@ const Main: React.FC = () => {
             <IntlProvider locale="pl" defaultLocale="pl">
                 <RouterProvider router={router} />
             </IntlProvider>
+        <img  src={`../../storage/app/thumbnails/00-6.webp`}/>
         </ThemeProvider>
     );
 };
