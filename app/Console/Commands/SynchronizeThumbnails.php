@@ -31,9 +31,6 @@ class SynchronizeThumbnails extends Command
 
         foreach ($images as $image) {
                 if (!empty($image['set_img_url'])) {
-                $explodedExtFileName = explode('.', $image['set_img_url']);
-                $explodedExtFileNameLast = array_key_last($explodedExtFileName);
-                $internalFileName = $image['set_num'] . '.' . $explodedExtFileName[$explodedExtFileNameLast];
 
                 $options = array(
                     "ssl" => array(
@@ -42,9 +39,17 @@ class SynchronizeThumbnails extends Command
                     ),
                 );
 
-                if (!Storage::disk('thumbnails')->get($internalFileName)) {
-                    $image = file_get_contents($image['set_img_url'], false, stream_context_create($options));
-                    Storage::disk('thumbnails')->put($internalFileName, $image);
+                if (!Storage::disk('thumbnails')->get($image['set_num'] . '.webp')) {
+                    $storagePath = storage_path() . '/app/thumbnails/';
+
+                    $fileContents = file_get_contents($image['set_img_url'], false, stream_context_create($options));
+                    $webp = imagecreatefromstring($fileContents);
+                    imagepalettetotruecolor($webp);
+                    imagealphablending($webp, true);
+                    imagesavealpha($webp, true);
+                    $webpName = $image['set_num'] . '.webp';
+                    imagewebp($webp, $storagePath . $webpName, 100);
+                    imagedestroy($webp);
                 }
             }
         }
