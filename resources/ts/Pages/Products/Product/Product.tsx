@@ -55,7 +55,7 @@ export const Product: React.FC<ProductProps> = ({
                 <CardContent className="p-4 group">
                     <button
                         ref={anchorRef}
-                        className="absolute text-gray-500 z-[2] right-2 top-2 bg-white rounded-full p-2 hover:bg-gray-200 hover:text-gry-700 transition ease-in-out duration-300"
+                        className="absolute text-gray-500 z-[2] right-2 top-2 bg-white rounded-full p-2 hover:bg-gray-200 hover:text-gray-700 transition ease-in-out duration-300"
                         onClick={(e) => {
                             e.preventDefault();
                             handelPopoverButtonClick();
@@ -73,7 +73,7 @@ export const Product: React.FC<ProductProps> = ({
                     <Box className="flex justify-center h-36 items-center bg-gray-100 rounded-md">
                         {imgURL ? (
                             <LazyLoadImage
-                                src={imgURL}
+                                src={`http://127.0.0.1:8000/api/thumbnail/${setNumber}`}
                                 alt={`image of ${setName} Lego set`}
                                 className="max-w-[100%] max-h-[100%] group-hover:scale-110  transition ease-in-out duration-300 p-3"
                             />
