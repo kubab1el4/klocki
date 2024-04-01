@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('parent_id')->constrained('lego_themes', 'id')->nullable();
             $table->string('name');
-            $table->integer('core_theme_id')->constrained('lego_themes', 'id')->nullable();
-            $table->boolean('displayed')->default(false);
             $table->timestamps();
         });
     }
