@@ -33,7 +33,7 @@ export const Products: React.FC = () => {
                 ? await fetch(
                       `${
                           import.meta.env.VITE_APP_URL
-                      }/api/theme/${themeId}/sets`
+                      }/api/theme/${themeId}/sets?page=${currentPage}`
                   )
                 : await fetch(
                       `${
