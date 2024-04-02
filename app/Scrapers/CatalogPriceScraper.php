@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Crawlers;
+namespace App\Scrapers;
 
 use App\Models\CatalogPrice;
 use Exception;
@@ -8,7 +8,7 @@ use Facebook\WebDriver\WebDriverKeys;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Panther\Client;
 
-class CatalogPriceCrawler {
+class CatalogPriceScraper {
 
     public static function execute() {
         $client = Client::createChromeClient(null, [
