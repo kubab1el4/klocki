@@ -74,7 +74,6 @@ export const PricedropModal: FC<PricedropModalProps> = ({
                         required
                         margin="dense"
                         id="name"
-                        name="email"
                         label={intl.formatMessage(
                             tPricedropModal.pricePlaceholder
                         )}
@@ -84,10 +83,10 @@ export const PricedropModal: FC<PricedropModalProps> = ({
                     />
                 </DialogContent>
                 <DialogActions className="flex items-center justify-center w-full">
-                    <Button onClick={handleClose}>
+                    <Button onClick={handleClose} variant="outlined">
                         {intl.formatMessage(tButton.cancel)}
                     </Button>
-                    <Button type="submit">
+                    <Button type="submit" variant="contained">
                         {intl.formatMessage(tPricedropModal.confirmButton)}
                     </Button>
                 </DialogActions>

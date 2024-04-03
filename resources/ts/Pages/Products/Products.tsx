@@ -2,7 +2,6 @@ import { CircularProgress, Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
-import { ThemeSelector } from "../../Components/ThemesSelector/ThemeSelector";
 import { Product, ProductProps } from "./Product/Product";
 
 type productsData = {
@@ -25,6 +24,8 @@ export const Products: React.FC = () => {
     };
     const { themeId } = useParams<{ themeId: string }>();
     const currentPage = searchParams.get("page");
+    const [total, setTotal] = useState(0);
+    const pages = Math.ceil(total / 15);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -33,14 +34,15 @@ export const Products: React.FC = () => {
                 ? await fetch(
                       `${
                           import.meta.env.VITE_APP_URL
-                      }/api/theme/${themeId}/sets?page=${currentPage}`
+                      }/api/theme/${themeId}/sets?sort=year:desc&page=${currentPage}`
                   )
                 : await fetch(
                       `${
                           import.meta.env.VITE_APP_URL
-                      }/api/sets?page=${currentPage}`
+                      }/api/sets?sort=year:desc&page=${currentPage}`
                   );
             const data = await response.json();
+            setTotal(data.meta.total);
             setIsLoading(false);
             setProducts(data.data);
         };
@@ -72,44 +74,43 @@ export const Products: React.FC = () => {
 
     return (
         <>
-            <ThemeSelector />
-            <div className="mx-auto w-fit my-8">
-                {isLoading ? (
-                    <div className="w-full h-full flex items-center justify-center">
-                        <CircularProgress color="primary" />
-                    </div>
-                ) : (
-                    <ul className="grid grid-cols-3">
-                        {products.map(
-                            ({
-                                id,
-                                setName,
-                                imgURL,
-                                pieces,
-                                price,
-                                setNumber,
-                                catalogPrice,
-                                themeName,
-                                year,
-                            }) => (
-                                <Product
-                                    id={id}
-                                    setNumber={setNumber}
-                                    key={id}
-                                    price={price}
-                                    setName={setName}
-                                    imgURL={imgURL}
-                                    pieces={pieces}
-                                    catalogPrice={catalogPrice}
-                                    themeName={themeName}
-                                    year={year}
-                                />
-                            )
-                        )}
-                    </ul>
-                )}
+            {isLoading ? (
+                <div className="w-full h-full flex items-center justify-center">
+                    <CircularProgress color="primary" />
+                </div>
+            ) : (
+                <ul className="grid grid-cols-3">
+                    {products.map(
+                        ({
+                            id,
+                            setName,
+                            imgURL,
+                            pieces,
+                            price,
+                            setNumber,
+                            catalogPrice,
+                            themeName,
+                            year,
+                        }) => (
+                            <Product
+                                id={id}
+                                setNumber={setNumber}
+                                key={id}
+                                price={price}
+                                setName={setName}
+                                imgURL={imgURL}
+                                pieces={pieces}
+                                catalogPrice={catalogPrice}
+                                themeName={themeName}
+                                year={year}
+                            />
+                        )
+                    )}
+                </ul>
+            )}
+            {pages > 1 && (
                 <Pagination
-                    count={1119}
+                    count={pages}
                     color="primary"
                     onChange={handelPageChange}
                     sx={{
@@ -121,7 +122,7 @@ export const Products: React.FC = () => {
                     siblingCount={2}
                     page={currentPage ? +currentPage : 1}
                 />
-            </div>
+            )}
         </>
     );
 };

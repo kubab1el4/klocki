@@ -30,7 +30,6 @@ export const ProductPopover: React.FC<ProductPopoverProps> = ({
     const handlePricedropModalOpen = () => setOpenPricedropModal(true);
     const handlePriceDropMocalClose = () => setOpenPricedropModal(false);
 
-    console.log(openPricedropModal);
     const buttonOptions = [
         {
             text: intl.formatMessage(tProductPopover.AddToWishlist),
