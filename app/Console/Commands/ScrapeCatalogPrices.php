@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Crawlers\CatalogPriceCrawler;
+use App\Scrapers\CatalogPriceScraper;
 use Illuminate\Console\Command;
 
 class CrawlCatalogPrices extends Command
@@ -12,7 +12,7 @@ class CrawlCatalogPrices extends Command
      *
      * @var string
      */
-    protected $signature = 'crawl-catalog-prices';
+    protected $signature = 'scrape-catalog-prices';
 
     /**
      * The console command description.
@@ -26,6 +26,6 @@ class CrawlCatalogPrices extends Command
      */
     public function handle()
     {
-        CatalogPriceCrawler::execute();
+        CatalogPriceScraper::execute();
     }
 }
