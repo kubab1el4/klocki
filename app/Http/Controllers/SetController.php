@@ -12,7 +12,7 @@ class SetController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-        return SetResource::collection(LEGOSet::sort()->filter()->sortFields('year')->paginate(15));
+        return SetResource::collection(LEGOSet::sort()->filter()->sortFields('year')->paginate(16));
     }
 
     /**

@@ -28,12 +28,12 @@ export const tProduct = defineMessages({
     },
     CatalogPrice: {
         id: "b7d9e9a1-2f4f-4b9f-8b2f-2b9f3c3e9f3a",
-        defaultMessage: "Cena katalogowa: {catalogPrice}",
+        defaultMessage: "{catalogPrice} katalogowo",
         description: "Catalog price",
     },
     Year: {
         id: "b7d9e9a1-2f4f-4b9f-8b2f-2b9f3c3e9f3a",
-        defaultMessage: "Rok prezentacji: {year}",
+        defaultMessage: " {year} rok",
         description: "Year of the product",
     },
 });
