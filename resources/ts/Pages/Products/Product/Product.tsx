@@ -91,6 +91,22 @@ export const Product: React.FC<ProductProps> = ({
                                 })}
                             </h2>
                             <div className="text-slate-600 text-sm">
+                                {/* <p>
+                                    {intl.formatMessage(
+                                        tProduct.PriceForOnePiece,
+                                        {
+                                            priceForOnePiece: (
+                                                price / pieces
+                                            ).toFixed(2),
+                                        }
+                                    )}
+                                </p> */}
+
+                                <p>
+                                    {intl.formatMessage(tProduct.Year, {
+                                        year,
+                                    })}
+                                </p>
                                 <p>
                                     {intl.formatMessage(
                                         tProduct.AdditionalInfo,
@@ -100,23 +116,8 @@ export const Product: React.FC<ProductProps> = ({
                                     )}
                                 </p>
                                 <p>
-                                    {intl.formatMessage(
-                                        tProduct.PriceForOnePiece,
-                                        {
-                                            priceForOnePiece: (
-                                                price / pieces
-                                            ).toFixed(2),
-                                        }
-                                    )}
-                                </p>
-                                <p>
                                     {intl.formatMessage(tProduct.CatalogPrice, {
                                         catalogPrice: catalogPriceAltered,
-                                    })}
-                                </p>
-                                <p>
-                                    {intl.formatMessage(tProduct.Year, {
-                                        year,
                                     })}
                                 </p>
                             </div>

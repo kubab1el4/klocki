@@ -1,6 +1,6 @@
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import { clsx } from 'clsx';
+import { clsx } from "clsx";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
@@ -9,8 +9,7 @@ type Theme = {
     parent_name: string;
     parent_id: number;
     name: string;
-}
-
+};
 
 export const ThemeSelector = () => {
     const [themes, setThemes] = useState<Theme[]>([]);
@@ -29,9 +28,13 @@ export const ThemeSelector = () => {
         fetchThemes();
     }, []);
 
-  const currentTheme = useMemo( () => themes.find(theme => theme.id === (themeId && parseInt(themeId))), [themeId])
+    const currentTheme = useMemo(
+        () =>
+            themes.find((theme) => theme.id === (themeId && parseInt(themeId))),
+        [themeId]
+    );
 
-  const onscroll = (offset: number) => {
+    const onscroll = (offset: number) => {
         if (scrollRef.current) {
             scrollRef.current.scrollLeft += offset;
         }
@@ -53,9 +56,13 @@ export const ThemeSelector = () => {
                 {themes.map((theme: { id: number; name: string }) => (
                     <li
                         key={theme.id}
-                        className={clsx( "p-2 cursor-pointer bg-stone-700 w-fit h-fit rounded-md hover:bg-stone-800 hover:text-primary transition-colors duration-300", {
-                            "text-primary bg-stone-800 ": currentTheme?.id === theme.id,
-                          })}
+                        className={clsx(
+                            "p-2 cursor-pointer bg-stone-700 w-fit h-fit rounded-md hover:bg-stone-800 hover:text-primary transition-colors duration-300",
+                            {
+                                "text-primary bg-stone-800 ":
+                                    currentTheme?.id === theme.id,
+                            }
+                        )}
                         onClick={() => navigate(`/products/${theme.id}`)}
                     >
                         {theme.name}

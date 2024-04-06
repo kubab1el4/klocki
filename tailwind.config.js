@@ -12,6 +12,8 @@ export default {
                 current: "currentColor",
                 white: "#ffffff",
                 primary: "#ec4899",
+                "primary-400": " #f472b6",
+                "primary-300": "#f9a8d4",
             },
         },
     },
