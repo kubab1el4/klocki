@@ -38,9 +38,9 @@ class AmazonPLSpider extends BasicSpider {
         StatsCollectorExtension::class,
     ];
 
-    public int $concurrency = 3;
+    public int $concurrency = 1;
 
-    public int $requestDelay = 5;
+    public int $requestDelay = 3;
 
     /** @return Request[] */
     protected function initialRequests(): array {
