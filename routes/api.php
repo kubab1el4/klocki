@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\SetController;
 use App\Http\Controllers\ThemeController;
 use Illuminate\Http\Request;
@@ -18,5 +19,6 @@ Route::get('sets', [SetController::class, 'index']);
 Route::get('theme/{id}', [ThemeController::class, 'show']);
 Route::get('theme/{id}/parent', [ThemeController::class, 'getParent']);
 Route::get('theme/{id}/children', [ThemeController::class, 'getChildren']);
-Route::get('theme/{id}/sets', [ThemeController::class, 'showSets']);
 Route::get('themes', [ThemeController::class, 'index']);
+
+Route::get('offers', [OfferController::class, 'index']);

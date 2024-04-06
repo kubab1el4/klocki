@@ -16,7 +16,7 @@ use RoachPHP\Spider\BasicSpider;
 use RoachPHP\Spider\ParseResult;
 use Symfony\Component\DomCrawler\Crawler;
 
-class AmazonPLSpider extends BasicSpider {
+class AmazonUSSpider extends BasicSpider {
 
     public array $downloaderMiddleware = [
         RequestDeduplicationMiddleware::class,
@@ -38,16 +38,16 @@ class AmazonPLSpider extends BasicSpider {
         StatsCollectorExtension::class,
     ];
 
-    public int $concurrency = 2;
+    public int $concurrency = 1;
 
-    public int $requestDelay = 3;
+    public int $requestDelay = 5;
 
     /** @return Request[] */
     protected function initialRequests(): array {
         return [
             new Request (
                 'GET',
-                'https://www.amazon.pl/s?k=lego&i=toys&rh=n%3A26163101031%2Cp_n_condition-type%3A21329610031%2Cp_123%3A249943&dc&__mk_pl_PL=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2WMUJBU1ULIVE&qid=1712245774&rnid=91049082031&sprefix=lego%2Caps%2C121&ref=sr_nr_p_123_1&ds=v1%3Apo3I8YYm4aY4g3Kx1c4ZD%2FbHqOUi1DFgIOnRuHnaCbo',
+                'https://www.amazon.com/s?k=lego&i=toys-and-games&rh=n%3A165793011%2Cp_89%3ALEGO%2Cp_n_feature_forty-one_browse-bin%3A119653281011&dc&ds=v1%3A75aXZ9YbiuojF0LHLxRrn8NjfFWFHOXvi5Jku4f%2Ff7k&crid=1YW7RTWAXPLU2&qid=1712433313&rnid=119653280011&sprefix=lego%2Caps%2C306&ref=sr_nr_p_n_feature_forty-one_browse-bin_1',
                 [$this, 'parse']
             ),
         ];
