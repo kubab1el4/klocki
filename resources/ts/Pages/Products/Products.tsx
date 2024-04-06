@@ -71,7 +71,6 @@ export const Products: React.FC = () => {
             id: id,
             setName: name,
             pieces: num_parts,
-            price: 500,
             imgURL: set_img_url,
             setNumber: set_num,
             catalogPrice: catalog_price,
@@ -94,7 +93,6 @@ export const Products: React.FC = () => {
                             setName,
                             imgURL,
                             pieces,
-                            price,
                             setNumber,
                             catalogPrice,
                             themeName,
@@ -104,7 +102,6 @@ export const Products: React.FC = () => {
                                 id={id}
                                 setNumber={setNumber}
                                 key={id}
-                                price={price}
                                 setName={setName}
                                 imgURL={imgURL}
                                 pieces={pieces}

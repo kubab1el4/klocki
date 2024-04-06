@@ -8,7 +8,7 @@ export const ProductsSection = () => {
         <>
             <ThemeSelector />
             <div className="max-w-screen-xl mx-auto my-8 grid grid-cols-10 ">
-                <div className="col-span-2 overflow-y-scroll h-[70vh]">
+                <div className="col-span-2 overflow-y-scroll">
                     <ProductFilterSidebar />
                 </div>
                 <div className="col-span-8">
