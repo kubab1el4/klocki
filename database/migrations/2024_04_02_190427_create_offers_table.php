@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->double('price');
-            $table->integer('set_num')->constrained('lego_sets');
-            $table->string('link');
+            $table->string('price');
+            $table->integer('set_id')->constrained('lego_sets');
+            $table->text('url');
             $table->string('seller');
             $table->timestamps();
         });

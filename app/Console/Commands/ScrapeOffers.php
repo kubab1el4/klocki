@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\LEGOSet;
-use App\Scrapers\OfferScraper;
+use App\Models\Offer;
+use App\Spiders\AmazonPLSpider;
 use Illuminate\Console\Command;
+use RoachPHP\Roach;
 
 class ScrapeOffers extends Command
 {
@@ -25,8 +26,17 @@ class ScrapeOffers extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
-    {
-        OfferScraper::execute();
+    public function handle() {
+        dump('Data rozpoczęcia: ' . date('Y-m-d H:i:s'));
+        $items = Roach::collectSpider(AmazonPLSpider::class);
+        foreach ($items as $item) {
+            $offer = new Offer;
+            $offer->set_id = $item['set_id'];
+            $offer->price = $item['price'];
+            $offer->seller = $item['seller'];
+            $offer->url = $item['url'];
+            $offer->save();
+        }
+        dump('Data zakończenia: ' . date('Y-m-d H:i:s'));
     }
 }
