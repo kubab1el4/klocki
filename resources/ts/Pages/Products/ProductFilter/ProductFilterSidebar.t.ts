@@ -6,4 +6,19 @@ export const tProductFilterSidebar = defineMessages({
         defaultMessage: "Seria",
         description: "Nagłowek filtrowania serii",
     },
+    showMore: {
+        id: "e734550d-1dc7-4102-9ac1-3f1d04556bd2",
+        defaultMessage: "Pokaż więcej",
+        description: "Przycisk pokaż wiecej",
+    },
+    showLess: {
+        id: "32bebf50-06bc-4fea-b300-05cdf90bef04",
+        defaultMessage: "Pokaż mniej",
+        description: "Przycisk pokaż mniej",
+    },
+    YearHeader: {
+        id: "0872a4e7-0750-4c7d-9ca1-6a92454ecd48",
+        defaultMessage: "Rok wydania",
+        description: "Nagłowek filtrowania roku",
+    },
 });

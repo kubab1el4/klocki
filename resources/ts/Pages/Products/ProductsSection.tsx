@@ -3,7 +3,7 @@ import { ThemeSelector } from "../../Components/ThemesSelector/ThemeSelector";
 import { ProductFilterSidebar } from "./ProductFilter/ProductFilterSidebar";
 import { Products } from "./Products";
 
-export const ProductsSection = () => {
+export const ProductsSection: React.FC = () => {
     return (
         <>
             <ThemeSelector />
