@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Offer;
 use App\Spiders\AmazonPLSpider;
+use App\Spiders\AmazonUSSpider;
 use Illuminate\Console\Command;
 use RoachPHP\Roach;
 
@@ -28,14 +29,17 @@ class ScrapeOffers extends Command
      */
     public function handle() {
         dump('Data rozpoczęcia: ' . date('Y-m-d H:i:s'));
-        $items = Roach::collectSpider(AmazonPLSpider::class);
+        $items = Roach::collectSpider(AmazonUSSpider::class);
         foreach ($items as $item) {
-            $offer = new Offer;
-            $offer->set_id = $item['set_id'];
-            $offer->price = $item['price'];
-            $offer->seller = $item['seller'];
-            $offer->url = $item['url'];
-            $offer->save();
+            $existingOffer = Offer::where('set_id', $item['set_id'])->where('seller', $item['seller'])->first();
+            if ($existingOffer) {
+                $offer = new Offer;
+                $offer->set_id = $item['set_id'];
+                $offer->price = $item['price'];
+                $offer->seller = $item['seller'];
+                $offer->url = $item['url'];
+                $offer->save();
+            }
         }
         dump('Data zakończenia: ' . date('Y-m-d H:i:s'));
     }

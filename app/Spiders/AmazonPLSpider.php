@@ -3,9 +3,9 @@
 namespace App\Spiders;
 
 use App\Models\LEGOSet;
+use App\Spiders\Middleware\TryResponseMiddleware;
 use Exception;
 use Generator;
-use RoachPHP\Downloader\Middleware\ProxyMiddleware;
 use RoachPHP\Downloader\Middleware\RequestDeduplicationMiddleware;
 use RoachPHP\Downloader\Middleware\UserAgentMiddleware;
 use RoachPHP\Extensions\LoggerExtension;
@@ -26,7 +26,7 @@ class AmazonPLSpider extends BasicSpider {
     ];
 
     public array $spiderMiddleware = [
-        //
+        TryResponseMiddleware::class,
     ];
 
     public array $itemProcessors = [
@@ -38,16 +38,16 @@ class AmazonPLSpider extends BasicSpider {
         StatsCollectorExtension::class,
     ];
 
-    public int $concurrency = 2;
+    public int $concurrency = 10;
 
-    public int $requestDelay = 3;
+    public int $requestDelay = 1;
 
     /** @return Request[] */
     protected function initialRequests(): array {
         return [
             new Request (
                 'GET',
-                'https://www.amazon.pl/s?k=lego&i=toys&rh=n%3A26163101031%2Cp_n_condition-type%3A21329610031%2Cp_123%3A249943&dc&__mk_pl_PL=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2WMUJBU1ULIVE&qid=1712245774&rnid=91049082031&sprefix=lego%2Caps%2C121&ref=sr_nr_p_123_1&ds=v1%3Apo3I8YYm4aY4g3Kx1c4ZD%2FbHqOUi1DFgIOnRuHnaCbo',
+                'https://www.amazon.pl/s?k=lego&i=toys&rh=n%3A26163101031%2Cp_n_condition-type%3A21329610031%2Cp_123%3A249943&dc&page=207&__mk_pl_PL=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2WMUJBU1ULIVE&qid=1712474007&rnid=91049082031&sprefix=lego%2Caps%2C121&ref=sr_pg_206',
                 [$this, 'parse']
             ),
         ];
