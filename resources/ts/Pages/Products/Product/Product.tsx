@@ -3,7 +3,7 @@ import {
     NotificationAddOutlined,
 } from "@mui/icons-material";
 import { Box, Card, CardContent } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { tProduct } from "./Product.t";
@@ -12,7 +12,6 @@ import { ProductPopover } from "./ProductPopover";
 export type ProductProps = {
     setName: string;
     pieces: number;
-    price: number;
     imgURL: string | null;
     setNumber: string;
     id: number;
@@ -24,12 +23,12 @@ export type ProductProps = {
 export const Product: React.FC<ProductProps> = ({
     setName,
     pieces,
-    price,
     imgURL,
     setNumber,
     catalogPrice,
     themeName,
     year,
+    id,
 }) => {
     const intl = useIntl();
     const setNumberAltered =
@@ -42,6 +41,22 @@ export const Product: React.FC<ProductProps> = ({
     const catalogPriceAltered = catalogPrice
         ? `${catalogPrice.slice(2)} zł`
         : "-";
+    const [price, setPrice] = useState("-");
+
+    useEffect(() => {
+        const fetchPrice = async () => {
+            const response = await fetch(
+                `${
+                    import.meta.env.VITE_APP_URL
+                }/api/offers?filters[set_id][$eq]=${id}`
+            );
+            const data = await response.json();
+            if (data.data.length > 0) {
+                setPrice(data.data[0].price);
+            }
+        };
+        fetchPrice();
+    }, []);
 
     return (
         <li>
@@ -128,7 +143,7 @@ export const Product: React.FC<ProductProps> = ({
                             {intl.formatMessage(tProduct.Price, {
                                 price: (
                                     <span className="text-primary">
-                                        {price} zł
+                                        {price}
                                     </span>
                                 ),
                             })}

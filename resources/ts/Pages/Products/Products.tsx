@@ -2,6 +2,7 @@ import { CircularProgress, Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
+import { getQueryForThemes } from "../../helpers/getQueryForThemes";
 import { Product, ProductProps } from "./Product/Product";
 
 type productsData = {
@@ -23,11 +24,7 @@ export const Products: React.FC = () => {
         setSearchParams({ page: value.toString() });
     };
     const { themeId } = useParams<{ themeId: string }>();
-    const themesArray = themeId?.split("&");
-    const themesFiltersArray = themesArray?.map(
-        (themeId, i) => `filters[$or][${i}][theme_id][$eq]=${themeId}`
-    );
-    console.log(themesFiltersArray);
+    const themesFiltersArray = getQueryForThemes(themeId);
 
     const currentPage = searchParams.get("page");
     const [total, setTotal] = useState(0);
@@ -71,7 +68,6 @@ export const Products: React.FC = () => {
             id: id,
             setName: name,
             pieces: num_parts,
-            price: 500,
             imgURL: set_img_url,
             setNumber: set_num,
             catalogPrice: catalog_price,
@@ -94,7 +90,6 @@ export const Products: React.FC = () => {
                             setName,
                             imgURL,
                             pieces,
-                            price,
                             setNumber,
                             catalogPrice,
                             themeName,
@@ -104,7 +99,6 @@ export const Products: React.FC = () => {
                                 id={id}
                                 setNumber={setNumber}
                                 key={id}
-                                price={price}
                                 setName={setName}
                                 imgURL={imgURL}
                                 pieces={pieces}
