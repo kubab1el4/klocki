@@ -11,14 +11,15 @@ class TryResponseMiddleware implements ResponseMiddlewareInterface {
     use Configurable;
 
     public function handleResponse(Response $response): Response {
-        if ($response->getStatus() === 503) {
+        if ($response->getStatus() !== 200) {
             $client = new Client;
+
             do {
                 sleep(5);
                 dump('Błąd, ponawiam próbę otworzenia za 5');
                 $newRequest = $client->send($response->getRequest()->getPsrRequest(), $response->getRequest()->getOptions());
                 $newResponse = new Response($newRequest, $response->getRequest());
-            } while ($newResponse->filter('title')->text('default', true) != 'Amazon.pl : lego');
+            } while ($response->getStatus() !== 200);
             return $newResponse;
         }
         return $response;

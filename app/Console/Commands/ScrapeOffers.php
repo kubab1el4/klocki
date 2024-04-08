@@ -29,7 +29,7 @@ class ScrapeOffers extends Command
      */
     public function handle() {
         dump('Data rozpoczęcia: ' . date('Y-m-d H:i:s'));
-        $items = Roach::collectSpider(AmazonUSSpider::class);
+        $items = Roach::collectSpider(AmazonPLSpider::class);
         foreach ($items as $item) {
             $existingOffer = Offer::where('set_id', $item['set_id'])->where('seller', $item['seller'])->first();
             if ($existingOffer) {
