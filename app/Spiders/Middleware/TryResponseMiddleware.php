@@ -8,6 +8,7 @@ use RoachPHP\Spider\Middleware\ResponseMiddlewareInterface;
 use RoachPHP\Support\Configurable;
 
 class TryResponseMiddleware implements ResponseMiddlewareInterface {
+    
     use Configurable;
 
     public function handleResponse(Response $response): Response {
@@ -19,7 +20,7 @@ class TryResponseMiddleware implements ResponseMiddlewareInterface {
                 dump('Błąd, ponawiam próbę otworzenia za 5');
                 $newRequest = $client->send($response->getRequest()->getPsrRequest(), $response->getRequest()->getOptions());
                 $newResponse = new Response($newRequest, $response->getRequest());
-            } while ($response->getStatus() !== 200);
+            } while ($newResponse->getStatus() !== 200);
             return $newResponse;
         }
         return $response;
