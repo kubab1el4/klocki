@@ -19,6 +19,7 @@ class TryResponseMiddleware implements ResponseMiddlewareInterface {
             $count = 0;
             $success = false;
             do {
+                $count++;
                 sleep(5);
                 dump('Błąd, ponawiam próbę otworzenia za 5');
                 try {
@@ -27,7 +28,7 @@ class TryResponseMiddleware implements ResponseMiddlewareInterface {
                     $success = true;
                 } catch (RequestException $e) {
                 }
-            } while ((!$success) && $count < 5);
+            } while ((!$success) && $count < 15);
             return $newResponse ?? $response;
         }
         return $response;

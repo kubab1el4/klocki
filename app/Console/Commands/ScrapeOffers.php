@@ -32,7 +32,7 @@ class ScrapeOffers extends Command
         $items = Roach::collectSpider(AmazonPLSpider::class);
         foreach ($items as $item) {
             $existingOffer = Offer::where('set_id', $item['set_id'])->where('seller', $item['seller'])->first();
-            if ($existingOffer) {
+            if (!$existingOffer) {
                 $offer = new Offer;
                 $offer->set_id = $item['set_id'];
                 $offer->price = $item['price'];
