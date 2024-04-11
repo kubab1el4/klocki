@@ -4,6 +4,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import { getQueryForThemes } from "../../../helpers/getQueryForThemes";
 import { tProductFilterSidebar } from "./ProductFilterSidebar.t";
 import { SectionHeader } from "./SectionHeader";
@@ -17,9 +18,12 @@ export const YearFilter: React.FC = () => {
     const [minYear, setMinYear] = useState<number>(0);
     const [maxYear, setMaxYear] = useState<number>(0);
     const [value, setValue] = useState<number[]>([minYear, maxYear]);
+    const [yearRangeParams, setYearRangeParams] = useSearchParams();
 
-    const handleChange = (event: Event, newValue: number | number[]) => {
+    const handleYearChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
+        yearRangeParams.set("year", (newValue as number[]).join(" "));
+        setYearRangeParams(yearRangeParams);
     };
     const { themeId } = useParams<{ themeId: string }>();
     const themesFiltersArray = getQueryForThemes(themeId);
@@ -69,7 +73,7 @@ export const YearFilter: React.FC = () => {
                 <Slider
                     getAriaLabel={() => "Temperature range"}
                     value={value}
-                    onChange={handleChange}
+                    onChange={handleYearChange}
                     valueLabelDisplay="on"
                     getAriaValueText={valuetext}
                     min={minYear}
