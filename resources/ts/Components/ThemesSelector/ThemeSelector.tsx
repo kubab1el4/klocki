@@ -1,7 +1,7 @@
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { clsx } from "clsx";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 type Theme = {
@@ -28,10 +28,8 @@ export const ThemeSelector = () => {
         fetchThemes();
     }, []);
 
-    const currentTheme = useMemo(
-        () =>
-            themes.find((theme) => theme.id === (themeId && parseInt(themeId))),
-        [themeId]
+    const currentTheme = themes.find(
+        (theme) => theme.id === (themeId && parseInt(themeId))
     );
 
     const onscroll = (offset: number) => {
@@ -53,21 +51,29 @@ export const ThemeSelector = () => {
                 className="flex gap-4 text-sm overflow-x-auto no-scrollbar whitespace-nowrap max-w-5xl items-center scroll scroll-smooth"
                 ref={scrollRef}
             >
-                {themes.map((theme: { id: number; name: string }) => (
-                    <li
-                        key={theme.id}
-                        className={clsx(
-                            "p-2 cursor-pointer bg-stone-700 w-fit h-fit rounded-md hover:bg-stone-800 hover:text-primary transition-colors duration-300",
-                            {
-                                "text-primary bg-stone-800 ":
-                                    currentTheme?.id === theme.id,
-                            }
-                        )}
-                        onClick={() => navigate(`/products/${theme.id}`)}
-                    >
-                        {theme.name}
-                    </li>
-                ))}
+                {themes.map((theme: { id: number; name: string }) => {
+                    const isActive = currentTheme?.id === theme.id;
+                    return (
+                        <li
+                            key={theme.id}
+                            className={clsx(
+                                "p-2 cursor-pointer bg-stone-700 w-fit h-fit rounded-md transition-colors duration-300",
+                                {
+                                    "text-primary bg-white": isActive,
+                                    "hover:bg-stone-800 hover:text-primary":
+                                        !isActive,
+                                }
+                            )}
+                            onClick={() => {
+                                isActive
+                                    ? navigate(`/products`)
+                                    : navigate(`/products/${theme.id}`);
+                            }}
+                        >
+                            {theme.name}
+                        </li>
+                    );
+                })}
             </ul>
             <Button onClick={() => onscroll(900)} className="cursor-pointer">
                 <ArrowForwardIos />

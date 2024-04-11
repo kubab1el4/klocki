@@ -6,7 +6,7 @@ export const ProductFilterSidebar: React.FC = () => {
     return (
         <>
             <YearFilter />
-            <SeriesFilter />;
+            <SeriesFilter />
         </>
     );
 };

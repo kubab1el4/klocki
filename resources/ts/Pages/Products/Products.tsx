@@ -21,38 +21,48 @@ export const Products: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams({});
     const [isLoading, setIsLoading] = useState(false);
     const handelPageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-        setSearchParams({ page: value.toString() });
+        searchParams.set("page", value.toString());
+        setSearchParams(searchParams);
     };
     const { themeId } = useParams<{ themeId: string }>();
+    const year = searchParams.get("year");
     const themesFiltersArray = getQueryForThemes(themeId);
+    const years = year?.split(" ");
+    const yearsFiltersString =
+        years &&
+        `&filters[year][$between][0]=${years[0]}&filters[year][$between][1]=${years[1]}`;
 
     const currentPage = searchParams.get("page");
     const [total, setTotal] = useState(0);
     const pages = Math.ceil(total / 16);
+    const fetchProducts = async () => {
+        setIsLoading(true);
+        const response = await fetch(
+            `${
+                import.meta.env.VITE_APP_URL
+            }/api/sets?${themesFiltersArray?.join(
+                "&"
+            )}&sort=year:desc${yearsFiltersString}&page=${currentPage}`
+        );
+        const data = await response.json();
+        setTotal(data.meta.total);
+        setIsLoading(false);
+        setProducts(data.data);
+    };
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            setIsLoading(true);
-            const response = themeId
-                ? await fetch(
-                      `${
-                          import.meta.env.VITE_APP_URL
-                      }/api/sets?${themesFiltersArray?.join(
-                          "&"
-                      )}&sort=year:desc&page=${currentPage}`
-                  )
-                : await fetch(
-                      `${
-                          import.meta.env.VITE_APP_URL
-                      }/api/sets?sort=year:desc&page=${currentPage}`
-                  );
-            const data = await response.json();
-            setTotal(data.meta.total);
-            setIsLoading(false);
-            setProducts(data.data);
-        };
         fetchProducts();
     }, [currentPage, themeId]);
+
+    useEffect(() => {
+        const fetchProductTimeout = setTimeout(() => {
+            searchParams.set("page", "1");
+            setSearchParams(searchParams);
+            fetchProducts();
+        }, 500);
+
+        return () => clearTimeout(fetchProductTimeout);
+    }, [year]);
 
     const products = productsData.map(
         ({
