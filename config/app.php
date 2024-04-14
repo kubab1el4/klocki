@@ -125,4 +125,6 @@ return [
 
     'lego_api_key' => 'b15023bec13c5c7bae0f8c62537eaa70',
 
+    'allegro_api_key' => 'G49cYGWz7OaHiIwKCx8wQAcjtVAii5j3uerXZoJfTNaNOPtXVlHxKIxmaDK9izng',
+
 ];
