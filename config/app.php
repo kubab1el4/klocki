@@ -125,6 +125,8 @@ return [
 
     'lego_api_key' => 'b15023bec13c5c7bae0f8c62537eaa70',
 
-    'allegro_api_key' => 'G49cYGWz7OaHiIwKCx8wQAcjtVAii5j3uerXZoJfTNaNOPtXVlHxKIxmaDK9izng',
+    'allegro_api_name' => 'FindASell2',
+    'allegro_api_client_id' => '72f068e7f694487db6ca993cbae4aad3',
+    'allegro_api_client_secret' => 'G49cYGWz7OaHiIwKCx8wQAcjtVAii5j3uerXZoJfTNaNOPtXVlHxKIxmaDK9izng',
 
 ];
