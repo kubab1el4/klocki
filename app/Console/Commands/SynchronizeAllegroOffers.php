@@ -26,23 +26,25 @@ class SynchronizeAllegroOffers extends Command
      * Execute the console command.
      */
     public function handle() {
-        dd(AllegroApiClient::getSets());
-        $data = [];
-        $pageCount = 1;
-        do {
-            $result = AllegroApiClient::getSets()->getDataArray();
-            if (isset($result['results'])) {
-                $data = array_merge($data, $result['results']);
-            }
-            $pageCount++;
-        } while (!isset($result['detail']) || $result['detail'] != 'Invalid page.');
+        $api = new AllegroApiClient;
+        $token = $api->getAccessToken();
+        $api->getLEGOOffers($token);
+        // $data = [];
+        // $pageCount = 1;
+        // do {
+        //     $result = AllegroApiClient::getSets()->getDataArray();
+        //     if (isset($result['results'])) {
+        //         $data = array_merge($data, $result['results']);
+        //     }
+        //     $pageCount++;
+        // } while (!isset($result['detail']) || $result['detail'] != 'Invalid page.');
 
-        foreach($data as $record) {
-            if(!Offer::where('set_num', '=', $record['set_num'])->first()) {
-                $set = new Offer;
-                $set->importData($record);
-                $set->save();
-            }
-        }
+        // foreach($data as $record) {
+        //     if(!Offer::where('set_num', '=', $record['set_num'])->first()) {
+        //         $set = new Offer;
+        //         $set->importData($record);
+        //         $set->save();
+        //     }
+        // }
     }
 }
