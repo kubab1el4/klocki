@@ -39,7 +39,7 @@ export const ThemeSelector = () => {
     };
 
     return (
-        <div className="w-100vh h-20 bg-stone-900 text-white flex items-center gap-4 p-4 justify-center top-0 sticky z-[99]">
+        <div className="w-100vh h-16 bg-stone-900 text-white flex items-center gap-4 p-4 justify-center top-0  z-[99]">
             <Button
                 onClick={() => onscroll(-900)}
                 className="cursor-pointer flex items-end justify-center"
@@ -60,7 +60,7 @@ export const ThemeSelector = () => {
                                 "p-2 cursor-pointer bg-stone-700 w-fit h-fit rounded-md transition-colors duration-300",
                                 {
                                     "text-primary bg-white": isActive,
-                                    "hover:bg-stone-800 hover:text-primary":
+                                    "hover:bg-stone-800 hover:text-primary-200":
                                         !isActive,
                                 }
                             )}
