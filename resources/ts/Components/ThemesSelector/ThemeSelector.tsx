@@ -60,7 +60,7 @@ export const ThemeSelector = () => {
                                 "p-2 cursor-pointer bg-stone-700 w-fit h-fit rounded-md transition-colors duration-300",
                                 {
                                     "text-primary bg-white": isActive,
-                                    "hover:bg-stone-800 hover:text-primary-200":
+                                    "hover:bg-stone-800 hover:text-primary":
                                         !isActive,
                                 }
                             )}
