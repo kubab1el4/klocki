@@ -4,6 +4,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\SetController;
 use App\Http\Controllers\ThemeController;
+use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,7 @@ Route::get('theme/{id}/children', [ThemeController::class, 'getChildren']);
 Route::get('themes', [ThemeController::class, 'index']);
 
 Route::get('offers', [OfferController::class, 'index']);
+
+Route::get('/search', function (Request $request) {
+    return Offer::search($request->search)->paginate(15);
+});

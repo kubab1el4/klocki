@@ -7,12 +7,31 @@ use Abbasudo\Purity\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Scout\Searchable;
 
 class LEGOSet extends Model
 {
-    use HasFactory, Filterable, Sortable;
+    use HasFactory, Filterable, Sortable, Searchable;
 
     protected $table = 'lego_sets';
+
+    /**
+     * Get the name of the index associated with the model.
+     */
+    public function searchableAs(): string
+    {
+        return 'sets_index';
+    }
+
+    public function toSearchableArray() {
+        return [
+            'id' => (int) $this->id,
+            'year' => (int) $this->year,
+            'namee' => $this->name,
+            'theme_id' => (int) $this->theme_id,
+            'num_parts' => (int) $this->num_parts,
+        ];
+    }
 
     public function importData($dataArray) {
         foreach($dataArray as $row => $value) {
