@@ -26,8 +26,8 @@ Route::get('themes', [ThemeController::class, 'index']);
 Route::get('offers', [OfferController::class, 'index']);
 
 Route::get('/search/offers', function (Request $request) {
-    return Offer::search($request->search)->paginate(15);
+    return Offer::search($request->search)->orderBy('id')->paginate(15);
 });
 Route::get('/search/sets', function (Request $request) {
-    return LEGOSet::search($request->search)->paginate(15);
+    return LEGOSet::search($request->search)->orderBy('year', 'desc')->paginate(15);
 });
