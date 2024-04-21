@@ -26,6 +26,7 @@ export const Products: React.FC = () => {
     };
     const { themeId } = useParams<{ themeId: string }>();
     const year = searchParams.get("year");
+    const searchQuery = searchParams.get("search");
     const themesFiltersArray = getQueryForThemes(themeId);
     const years = year?.split(" ");
     const yearsFiltersString =
@@ -40,19 +41,19 @@ export const Products: React.FC = () => {
         const response = await fetch(
             `${
                 import.meta.env.VITE_APP_URL
-            }/api/sets?${themesFiltersArray?.join(
+            }/api/search/sets?search=${searchQuery}&${themesFiltersArray?.join(
                 "&"
             )}&sort=year:desc${yearsFiltersString}&page=${currentPage}`
         );
         const data = await response.json();
-        setTotal(data.meta.total);
+        setTotal(data.total);
         setIsLoading(false);
         setProducts(data.data);
     };
 
     useEffect(() => {
         fetchProducts();
-    }, [currentPage, themeId]);
+    }, [currentPage, themeId, searchQuery]);
 
     useEffect(() => {
         const fetchProductTimeout = setTimeout(() => {

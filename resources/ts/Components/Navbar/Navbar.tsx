@@ -1,13 +1,17 @@
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
+import React, { FormEvent, useRef } from "react";
 import { useIntl } from "react-intl";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useSearchParams } from "react-router-dom";
+import { useSearchQueryContext } from "../../../contex/searchQueryContex";
 import { tNavbar } from "./navbar.t";
 
 export const Navbar = () => {
     const intl = useIntl();
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [searchParams, setSearchParams] = useSearchParams({});
+    const { setQuery } = useSearchQueryContext();
     const linksOptions = [
         {
             text: intl.formatMessage(tNavbar.products),
@@ -15,17 +19,26 @@ export const Navbar = () => {
         },
         {
             text: intl.formatMessage(tNavbar.stealZone),
-            linkTo: "/",
+            linkTo: "/deals",
         },
     ];
 
+    const handelSearchSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        if (inputRef.current?.value) {
+            //searchParams.set("search", inputRef.current?.value.toString());
+            setSearchParams(`search=${inputRef.current?.value.toString()}`);
+            setQuery(inputRef.current?.value);
+        }
+    };
+
     return (
-        <nav className="h-16 bg-primary sticky top-0 z-40 flex items-center text-white px-24 justify-between">
-            <div className="flex gap-8 items-center">
+        <nav className="h-16 bg-primary sticky top-0 z-40 flex items-center text-white justify-around">
+            <div className="flex gap-8 items-center font-semibold">
                 <Link to="/">
-                    <h2 className="hover:text-primary-900 cursor-pointer tracking-wide flex transition  items-center text-xl">
+                    <h2 className="hover:text-primary-900 cursor-pointer tracking-wide flex transition  items-center text-lg">
                         <AttachMoneyIcon />
-                        {intl.formatMessage(tNavbar.companyName)}
+                        {intl.formatMessage(tNavbar.companyName).toUpperCase()}
                     </h2>
                 </Link>
 
@@ -48,8 +61,14 @@ export const Navbar = () => {
             </div>
 
             <div className="flex items-center gap-6">
-                <form className="w-96 text-white relative">
-                    <input className="h-8 bg-primary-300 w-96 pl-4 pr-10 rounded-2xl outline-none" />
+                <form
+                    className="w-96 text-white relative"
+                    onSubmit={handelSearchSubmit}
+                >
+                    <input
+                        className="h-8 bg-primary-300 w-96 pl-4 pr-10 rounded-2xl outline-none"
+                        ref={inputRef}
+                    />
                     <button type="submit" className="absolute right-2 h-full">
                         <SearchIcon />
                     </button>
