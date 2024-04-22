@@ -10,7 +10,7 @@ class OfferController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        return OfferResource::collection(Offer::sort()->filter()->paginate(10));
+        return OfferResource::collection(Offer::sort()->filter()->paginate(config('app.default_pagination')));
     }
 
     /**

@@ -125,8 +125,10 @@ return [
 
     'lego_api_key' => 'b15023bec13c5c7bae0f8c62537eaa70',
 
-    'allegro_api_name' => 'FindASell2',
-    'allegro_api_client_id' => '72f068e7f694487db6ca993cbae4aad3',
-    'allegro_api_client_secret' => 'G49cYGWz7OaHiIwKCx8wQAcjtVAii5j3uerXZoJfTNaNOPtXVlHxKIxmaDK9izng',
+    'allegro_api_name' => 'klocki.test',
+    'allegro_api_client_id' => '938908df89ab4d4cafa30b1b0487dca3',
+    'allegro_api_client_secret' => '3w2aF9gMLb0HbNqf4WhpK9HfOS6mL2B7JCNtR1lF8iArd3060fyhVfDrWl6ARf4w',
+
+    'default_pagination' => env('DEFAULT_PAGINATION', 15),
 
 ];

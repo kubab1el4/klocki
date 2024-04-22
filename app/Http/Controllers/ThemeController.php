@@ -11,7 +11,7 @@ class ThemeController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        return ThemeResource::collection(LEGOTheme::sort()->filter()->paginate(10));
+        return ThemeResource::collection(LEGOTheme::sort()->filter()->paginate(config('app.default_pagination')));
     }
 
     /**
@@ -25,7 +25,7 @@ class ThemeController extends Controller {
      * Display sets from theme of given id.
      */
     public function showSets(string $id) {
-        return SetResource::collection(LEGOTheme::findOrFail($id)->getRecursiveSets()->toQuery()->sortFields('year')->filter()->sort()->paginate(16));
+        return SetResource::collection(LEGOTheme::findOrFail($id)->getRecursiveSets()->toQuery()->sortFields('year')->filter()->sort()->paginate(config('app.default_pagination')));
     }
 
      /**
@@ -39,6 +39,6 @@ class ThemeController extends Controller {
      * Display children of theme.
      */
     public function getChildren(string $id) {
-        return ThemeResource::collection(LEGOTheme::findOrFail($id)->children()->paginate(16));
+        return ThemeResource::collection(LEGOTheme::findOrFail($id)->children()->paginate(config('app.default_pagination')));
     }
 }

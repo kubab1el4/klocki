@@ -138,7 +138,7 @@ return [
         'index-settings' => [
             LEGOSet::class => [
                 'filterableAttributes'=> ['id', 'set_num', 'name', 'year', 'theme_id'],
-                'sortableAttributes' => ['year', 'id', 'name'],
+                'sortableAttributes' => ['year', 'id', 'name', 'set_num'],
                 // Other settings fields...
             ],
             Offer::class => [
