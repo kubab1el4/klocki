@@ -47,7 +47,6 @@ export const PricedropModal: FC<PricedropModalProps> = ({
                             (formData as any).entries()
                         );
                         const email = formJson.email;
-                        console.log(email);
                         handleClose();
                     },
                 }}
