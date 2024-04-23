@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SetController;
 use App\Http\Controllers\ThemeController;
 use App\Models\LEGOSet;
@@ -31,28 +32,5 @@ Route::get('themes', [ThemeController::class, 'index']);
 
 Route::get('offers', [OfferController::class, 'index']);
 
-Route::get('/search/offers', function (Request $request) {
-    $sortable = !empty($request->sort) ? explode(':', $request->sort) : [];
-    $filterable = !empty($request->filter) ? explode('=', $request->filter) : [];
-    return Offer::search($request->search)->orderBy($sortable[0] ?? 'id', $sortable[1] ?? 'desc')->where($filterable[0], $filterable[1])->paginate(config('app.default_pagination'));
-});
-Route::get('/search/sets', function (Request $request) {
-    return LEGOSet::search(
-        $request->search,
-        function (Indexes $meilisearch, string $query, array $options) use ($request) {
-            if ($request->has(key: 'filter')) {
-                $filterArray = explode(',', $request->get('filter'));
-                $options['filter'] = implode(' OR ', $filterArray);
-            }
-
-            if ($request->has(key: 'sort')) {
-                $sortArray = explode(',', $request->get('sort'));
-                $options['sort'] = [...$sortArray];
-            }
-            return $meilisearch->search(
-                query: $query,
-                options: $options,
-            );
-        },
-    )->get()->toQuery()->paginate(config('app.default_pagination'));
-});
+Route::get('/search/sets', [SearchController::class, 'searchSets']);
+Route::get('/search/offers', [SearchController::class, 'searchOffers']);
