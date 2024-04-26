@@ -8,7 +8,7 @@ use Meilisearch\Endpoints\Indexes;
 
 class SearchController extends Controller {
     public function searchSets(Request $request) {
-        $sets = LEGOSet::search($request->search)->get()->toQuery();
+        $sets = LEGOSet::search($request->search)->take(200)->get()->toQuery();
 
         if ($request->has('filter')) {
             $filterArray = explode(',', $request->get('filter'));
@@ -41,7 +41,7 @@ class SearchController extends Controller {
     }
 
     public function searchOffers(Request $request) {
-        $offers = LEGOSet::search($request->search)->get()->toQuery();
+        $offers = LEGOSet::search($request->search)->take(200)->get()->toQuery();
 
         if ($request->has('filter')) {
             $filterArray = explode(',', $request->get('filter'));
