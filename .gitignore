@@ -17,3 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/meilifiles
+/data.ms
+/storage/db-data
+meilisearch
