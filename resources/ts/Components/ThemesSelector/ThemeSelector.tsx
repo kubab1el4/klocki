@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { clsx } from "clsx";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { productsRoute } from "../../routes/routes";
 
 type Theme = {
     id: number;
@@ -66,8 +67,8 @@ export const ThemeSelector = () => {
                             )}
                             onClick={() => {
                                 isActive
-                                    ? navigate(`/products`)
-                                    : navigate(`/products/${theme.id}`);
+                                    ? navigate(`${productsRoute}`)
+                                    : navigate(`${productsRoute}/${theme.id}`);
                             }}
                         >
                             {theme.name}

@@ -1,13 +1,17 @@
 import { CircularProgress, ThemeProvider, createTheme } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { IntlProvider } from "react-intl";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { SearchQueryContext } from "../../contex/searchQueryContex";
-import { Navbar } from "../Components/Navbar/Navbar";
+import {
+    Route,
+    RouterProvider,
+    createBrowserRouter,
+    createRoutesFromElements,
+} from "react-router-dom";
+import { PageWrapper } from "../Components/PageWrapper/PageWrapper";
+import { productsRoute } from "../routes/routes";
 import { ProductsSection } from "./Products/ProductsSection";
 
 const Main: React.FC = () => {
-    const [query, setQuery] = useState<string>("");
     const theme = createTheme({
         palette: {
             primary: {
@@ -18,34 +22,27 @@ const Main: React.FC = () => {
             },
         },
     });
-    const router = createBrowserRouter([
-        {
-            path: "/",
-            element: <Navbar />,
-        },
-        { path: "products/:themeId?", element: <ProductsSection /> },
-        {
-            path: "deals",
-            element: (
-                <>
-                    <Navbar />
-                    Okazje
-                </>
-            ),
-        },
-    ]);
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route path="/" element={<PageWrapper />}>
+                <Route
+                    path={`${productsRoute}/:themeId?`}
+                    element={<ProductsSection />}
+                />
+                <Route path="deals" element={<div>Okazje</div>} />
+            </Route>
+        )
+    );
 
     return (
         <ThemeProvider theme={theme}>
             <IntlProvider locale="pl" defaultLocale="pl">
-                <SearchQueryContext.Provider value={{ query, setQuery }}>
-                    <RouterProvider
-                        router={router}
-                        fallbackElement={
-                            <CircularProgress className="mx-auto" size="16" />
-                        }
-                    />
-                </SearchQueryContext.Provider>
+                <RouterProvider
+                    router={router}
+                    fallbackElement={
+                        <CircularProgress className="mx-auto" size="16" />
+                    }
+                />
             </IntlProvider>
         </ThemeProvider>
     );

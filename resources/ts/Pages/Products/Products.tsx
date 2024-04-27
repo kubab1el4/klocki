@@ -28,6 +28,7 @@ export const Products: React.FC = () => {
     const year = searchParams.get("year");
     const searchQuery = searchParams.get("search");
     const themesFiltersArray = getQueryForThemes(themeId);
+    console.log(searchQuery);
     const years = year?.split(" ");
     const yearsFiltersString =
         years &&
@@ -39,13 +40,14 @@ export const Products: React.FC = () => {
     const fetchProducts = async () => {
         setIsLoading(true);
         const response = await fetch(
-            `${
-                import.meta.env.VITE_APP_URL
-            }/api/search/sets?search=${searchQuery}&${themesFiltersArray?.join(
-                "&"
-            )}&sort=year:desc${yearsFiltersString}&page=${currentPage}`
+            `${import.meta.env.VITE_APP_URL}/api/search/sets?${
+                searchQuery ? `search=${searchQuery}&` : ""
+            }${themesFiltersArray?.join(
+                ","
+            )}&sort=year:desc&${yearsFiltersString}&page=${currentPage}`
         );
         const data = await response.json();
+        console.log(data);
         setTotal(data.total);
         setIsLoading(false);
         setProducts(data.data);
@@ -65,7 +67,7 @@ export const Products: React.FC = () => {
         return () => clearTimeout(fetchProductTimeout);
     }, [year]);
 
-    const products = productsData.map(
+    const products = productsData?.map(
         ({
             id,
             name,
@@ -95,7 +97,7 @@ export const Products: React.FC = () => {
                 </div>
             ) : (
                 <ul className="grid grid-cols-4">
-                    {products.map(
+                    {products?.map(
                         ({
                             id,
                             setName,

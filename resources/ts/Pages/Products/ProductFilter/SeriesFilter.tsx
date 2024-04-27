@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router";
+import { productsRoute } from "../../../routes/routes";
 import { tProductFilterSidebar } from "./ProductFilterSidebar.t";
 import { SectionHeader } from "./SectionHeader";
 
@@ -69,10 +70,10 @@ export const SeriesFilter: React.FC = () => {
                                         if (isChecked) {
                                             themeId
                                                 ? navigate(
-                                                      `/products/${themeId}&${theme.id}`
+                                                      `${productsRoute}/${themeId}&${theme.id}`
                                                   )
                                                 : navigate(
-                                                      `/products/${theme.id}`
+                                                      `${productsRoute}/${theme.id}`
                                                   );
                                         } else {
                                             const themes = themeId?.split("&");
