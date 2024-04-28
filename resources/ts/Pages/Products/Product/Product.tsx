@@ -112,10 +112,10 @@ export const Product: React.FC<ProductProps> = ({
                                         {
                                             priceForOnePiece: (
                                                 price / pieces
-                                            ).toFixed(2),
-                                        }
-                                    )}
-                                </p> */}
+                                                ).toFixed(2),
+                                            }
+                                            )}
+                                        </p> */}
 
                                 <p>
                                     {intl.formatMessage(tProduct.Year, {
