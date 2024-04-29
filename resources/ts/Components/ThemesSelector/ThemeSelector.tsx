@@ -1,9 +1,10 @@
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { clsx } from "clsx";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate, useParams } from "react-router";
-import { productsRoute } from "../../routes/routes";
+import { useFetch } from "../../hooks/useFetch";
+import { domain, productsRoute } from "../../routes/routes";
 
 type Theme = {
     id: number;
@@ -13,21 +14,11 @@ type Theme = {
 };
 
 export const ThemeSelector = () => {
-    const [themes, setThemes] = useState<Theme[]>([]);
     const scrollRef = React.useRef<HTMLUListElement>(null);
     const navigate = useNavigate();
     const { themeId } = useParams<{ themeId: string }>();
-
-    useEffect(() => {
-        const fetchThemes = async () => {
-            const response = await fetch(
-                `${import.meta.env.VITE_APP_URL}/api/themes`
-            );
-            const data = await response.json();
-            setThemes(data.data);
-        };
-        fetchThemes();
-    }, []);
+    const { data } = useFetch(`${domain}/api/themes`);
+    const themes = data.data as Theme[];
 
     const currentTheme = themes.find(
         (theme) => theme.id === (themeId && parseInt(themeId))

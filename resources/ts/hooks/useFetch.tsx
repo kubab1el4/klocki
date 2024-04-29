@@ -32,7 +32,6 @@ export const useFetch = (query: string, debounce?: number): FetchHook => {
         const fetchProductsTimeout = setTimeout(() => {
             fetchProducts();
         }, debounce);
-        console.log(data);
 
         return () => clearTimeout(fetchProductsTimeout);
     }, [query]);

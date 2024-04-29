@@ -3,9 +3,11 @@ import {
     NotificationAddOutlined,
 } from "@mui/icons-material";
 import { Box, Card, CardContent } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useIntl } from "react-intl";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useFetch } from "../../../hooks/useFetch";
+import { domain } from "../../../routes/routes";
 import { tProduct } from "./Product.t";
 import { ProductPopover } from "./ProductPopover";
 
@@ -41,22 +43,12 @@ export const Product: React.FC<ProductProps> = ({
     const catalogPriceAltered = catalogPrice
         ? `${catalogPrice.slice(2)} zł`
         : "-";
-    const [price, setPrice] = useState("-");
 
-    useEffect(() => {
-        const fetchPrice = async () => {
-            const response = await fetch(
-                `${
-                    import.meta.env.VITE_APP_URL
-                }/api/offers?filters[set_id][$eq]=${id}`
-            );
-            const data = await response.json();
-            if (data.data.length > 0) {
-                setPrice(data.data[0].price);
-            }
-        };
-        fetchPrice();
-    }, []);
+    const { data } = useFetch(
+        `${domain}/api/offers?filters[set_id][$eq]=${id}`
+    );
+    // @ts-ignore
+    const price = data.data.length > 0 ? data.data[0].price : "-";
 
     return (
         <li>
@@ -106,17 +98,6 @@ export const Product: React.FC<ProductProps> = ({
                                 })}
                             </h2>
                             <div className="text-slate-600 text-sm">
-                                {/* <p>
-                                    {intl.formatMessage(
-                                        tProduct.PriceForOnePiece,
-                                        {
-                                            priceForOnePiece: (
-                                                price / pieces
-                                                ).toFixed(2),
-                                            }
-                                            )}
-                                        </p> */}
-
                                 <p>
                                     {intl.formatMessage(tProduct.Year, {
                                         year,

@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router";
-import { productsRoute } from "../../../routes/routes";
+import { domain, productsRoute } from "../../../routes/routes";
 import { tProductFilterSidebar } from "./ProductFilterSidebar.t";
 import { SectionHeader } from "./SectionHeader";
 
@@ -35,9 +35,7 @@ export const SeriesFilter: React.FC = () => {
             setIsLoading(true);
 
             const response = await fetch(
-                `${
-                    import.meta.env.VITE_APP_URL
-                }/api/themes?filters[parent_id][$null]&sort=name&page=${currentPage}`
+                `${domain}/api/themes?filters[parent_id][$null]&sort=name&page=${currentPage}`
             );
             const data = await response.json();
             setThemes((prevdata) => [...prevdata, ...data.data]);

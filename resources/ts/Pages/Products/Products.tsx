@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import { getQueryForThemes } from "../../helpers/getQueryForThemes";
 import { useFetch } from "../../hooks/useFetch";
+import { domain } from "../../routes/routes";
 import { Product, ProductProps } from "./Product/Product";
 
 type productsData = {
@@ -35,9 +36,7 @@ export const Products: React.FC = () => {
     const currentPage = searchParams.get("page");
 
     const { data, isLoading, errorMessage } = useFetch(
-        `http://${window.location.hostname}/api/${
-            searchQuery ? "search/" : ""
-        }sets?${
+        `${domain}/api/${searchQuery ? "search/" : ""}sets?${
             searchQuery ? `search=${searchQuery}&` : ""
         }${themesFiltersArray?.join(
             "&"

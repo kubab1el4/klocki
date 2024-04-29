@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import { getQueryForThemes } from "../../../helpers/getQueryForThemes";
+import { domain } from "../../../routes/routes";
 import { tProductFilterSidebar } from "./ProductFilterSidebar.t";
 import { SectionHeader } from "./SectionHeader";
 
@@ -30,27 +31,17 @@ export const YearFilter: React.FC = () => {
 
     useEffect(() => {
         const fetchMaxAndMinYear = async () => {
-            const responseMaxYear = themeId
-                ? await fetch(
-                      `${
-                          import.meta.env.VITE_APP_URL
-                      }/api/sets?${themesFiltersArray?.join(
-                          "&"
-                      )}&sort=year:desc`
-                  )
-                : await fetch(
-                      `${import.meta.env.VITE_APP_URL}/api/sets?sort=year:desc`
-                  );
+            const responseMaxYear = await fetch(
+                `${domain}/api/sets?${themesFiltersArray?.join(
+                    "&"
+                )}&sort=year:desc`
+            );
 
-            const responseMinYear = themeId
-                ? await fetch(
-                      `${
-                          import.meta.env.VITE_APP_URL
-                      }/api/sets?${themesFiltersArray?.join("&")}&sort=year:asc`
-                  )
-                : await fetch(
-                      `${import.meta.env.VITE_APP_URL}/api/sets?sort=year:asc`
-                  );
+            const responseMinYear = await fetch(
+                `${domain}/api/sets?${themesFiltersArray?.join(
+                    "&"
+                )}&sort=year:asc`
+            );
 
             const dataMinYear = await responseMinYear.json();
             const dataMaxYear = await responseMaxYear.json();
