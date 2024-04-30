@@ -1,8 +1,10 @@
 import { CircularProgress, Pagination } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import { getQueryForThemes } from "../../helpers/getQueryForThemes";
+import { useFetch } from "../../hooks/useFetch";
+import { domain } from "../../routes/routes";
 import { Product, ProductProps } from "./Product/Product";
 
 type productsData = {
@@ -17,9 +19,7 @@ type productsData = {
 }[];
 
 export const Products: React.FC = () => {
-    const [productsData, setProducts] = useState<productsData>([]);
     const [searchParams, setSearchParams] = useSearchParams({});
-    const [isLoading, setIsLoading] = useState(false);
     const handelPageChange = (_: React.ChangeEvent<unknown>, value: number) => {
         searchParams.set("page", value.toString());
         setSearchParams(searchParams);
@@ -34,38 +34,24 @@ export const Products: React.FC = () => {
         `&filters[year][$between][0]=${years[0]}&filters[year][$between][1]=${years[1]}`;
 
     const currentPage = searchParams.get("page");
-    const [total, setTotal] = useState(0);
-    const pages = Math.ceil(total / 16);
-    const fetchProducts = async () => {
-        setIsLoading(true);
-        const response = await fetch(
-            `${
-                import.meta.env.VITE_APP_URL
-            }/api/search/sets?search=${searchQuery}&${themesFiltersArray?.join(
-                "&"
-            )}&sort=year:desc${yearsFiltersString}&page=${currentPage}`
-        );
-        const data = await response.json();
-        setTotal(data.total);
-        setIsLoading(false);
-        setProducts(data.data);
-    };
 
-    useEffect(() => {
-        fetchProducts();
-    }, [currentPage, themeId, searchQuery]);
+    const { data, isLoading, errorMessage } = useFetch(
+        `${domain}/api/${searchQuery ? "search/" : ""}sets?${
+            searchQuery ? `search=${searchQuery}&` : ""
+        }${themesFiltersArray?.join(
+            "&"
+        )}&sort=year:desc&${yearsFiltersString}&page=${currentPage}`
+    );
+    const pages = Math.ceil(
+        data.total
+            ? data?.total / 16
+            : data.meta?.last_page
+            ? data.meta.last_page
+            : 0
+    );
+    console.log(data, isLoading);
 
-    useEffect(() => {
-        const fetchProductTimeout = setTimeout(() => {
-            searchParams.set("page", "1");
-            setSearchParams(searchParams);
-            fetchProducts();
-        }, 500);
-
-        return () => clearTimeout(fetchProductTimeout);
-    }, [year]);
-
-    const products = productsData.map(
+    const products = data.data?.map(
         ({
             id,
             name,
@@ -93,9 +79,9 @@ export const Products: React.FC = () => {
                 <div className="w-full h-full flex items-center justify-center">
                     <CircularProgress color="primary" />
                 </div>
-            ) : (
+            ) : products ? (
                 <ul className="grid grid-cols-4">
-                    {products.map(
+                    {products?.map(
                         ({
                             id,
                             setName,
@@ -120,6 +106,8 @@ export const Products: React.FC = () => {
                         )
                     )}
                 </ul>
+            ) : (
+                <div>Przykro nam, nie znaleźliśmy nic dla tego zapytania</div>
             )}
             {pages > 1 && (
                 <Pagination

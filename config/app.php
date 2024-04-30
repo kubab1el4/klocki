@@ -129,6 +129,6 @@ return [
     'allegro_api_client_id' => '938908df89ab4d4cafa30b1b0487dca3',
     'allegro_api_client_secret' => '3w2aF9gMLb0HbNqf4WhpK9HfOS6mL2B7JCNtR1lF8iArd3060fyhVfDrWl6ARf4w',
 
-    'default_pagination' => env('DEFAULT_PAGINATION', 15),
+    'default_pagination' => env('DEFAULT_PAGINATION', 16),
 
 ];
