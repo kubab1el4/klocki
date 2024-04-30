@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Scrapers\CatalogPriceScraper;
 use Illuminate\Console\Command;
 
-class CrawlCatalogPrices extends Command
+class ScrapeCatalogPrices extends Command
 {
     /**
      * The name and signature of the console command.
