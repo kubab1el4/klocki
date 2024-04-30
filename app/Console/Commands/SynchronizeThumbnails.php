@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\LEGOSet;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,7 +43,11 @@ class SynchronizeThumbnails extends Command
                 if (!Storage::disk('thumbnails')->get($image['set_num'] . '.webp')) {
                     $storagePath = storage_path() . '/app/thumbnails/';
 
-                    $fileContents = file_get_contents($image['set_img_url'], false, stream_context_create($options));
+                    try {
+                        $fileContents = file_get_contents($image['set_img_url'], false, stream_context_create($options));
+                    } catch (Exception $e) {
+                        continue;
+                    }
                     $webp = imagecreatefromstring($fileContents);
                     imagepalettetotruecolor($webp);
                     imagealphablending($webp, true);
