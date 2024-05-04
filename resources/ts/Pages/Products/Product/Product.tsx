@@ -80,7 +80,7 @@ export const Product: React.FC<ProductProps> = ({
                     <Box className="flex justify-center h-36 items-center bg-gray-100 rounded-md">
                         {imgURL ? (
                             <LazyLoadImage
-                                src={`http://127.0.0.1:8000/api/thumbnail/${setNumber}`}
+                                src={`${domain}/api/thumbnail/${setNumber}`}
                                 alt={`image of ${setName} Lego set`}
                                 className="max-w-[100%] max-h-[100%] group-hover:scale-110  transition ease-in-out duration-300 p-3"
                             />

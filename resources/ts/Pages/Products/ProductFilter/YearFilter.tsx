@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import { getQueryForThemes } from "../../../helpers/getQueryForThemes";
+import { useDebounce } from "../../../hooks/useDebounce";
 import { domain } from "../../../routes/routes";
 import { tProductFilterSidebar } from "./ProductFilterSidebar.t";
 import { SectionHeader } from "./SectionHeader";
@@ -21,10 +22,14 @@ export const YearFilter: React.FC = () => {
     const [value, setValue] = useState<number[]>([minYear, maxYear]);
     const [yearRangeParams, setYearRangeParams] = useSearchParams();
 
+    const setDebounceYear = useDebounce(() => {
+        yearRangeParams.set("year", (value as number[]).join(" "));
+        setYearRangeParams(yearRangeParams);
+    });
+
     const handleYearChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
-        yearRangeParams.set("year", (newValue as number[]).join(" "));
-        setYearRangeParams(yearRangeParams);
+        setDebounceYear();
     };
     const { themeId } = useParams<{ themeId: string }>();
     const themesFiltersArray = getQueryForThemes(themeId);
