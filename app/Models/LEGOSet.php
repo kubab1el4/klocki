@@ -27,6 +27,7 @@ class LEGOSet extends Model
         return [
             'id' => (int) $this->id,
             'year' => (int) $this->year,
+            'set_num' => $this->set_num,
             'name' => $this->name,
             'theme_id' => (int) $this->theme_id,
             'theme_name' => $this->theme?->name,
