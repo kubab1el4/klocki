@@ -16,7 +16,7 @@ class SearchController extends Controller {
         } else {
             return SetResource::collection($search);
         }
-        return SetResource::collection(LEGOSet::sort()->filter()->findMany($search->all())->toQuery()->paginate(config('app.default_pagination')));
+        return SetResource::collection(LEGOSet::filter()->sort()->findMany($search->all())->paginate(config('app.default_pagination')));
     }
 
     public function searchOffers(Request $request) {
@@ -26,6 +26,6 @@ class SearchController extends Controller {
         } else {
             return OfferResource::collection($search);
         }
-        return OfferResource::collection(LEGOSet::sort()->filter()->findMany($search->all())->toQuery()->paginate(config('app.default_pagination')));
+        return OfferResource::collection(LEGOSet::filter()->sort()->findMany($search->all())->paginate(config('app.default_pagination')));
     }
 }
