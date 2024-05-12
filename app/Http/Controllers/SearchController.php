@@ -16,14 +16,15 @@ class SearchController extends Controller {
         } else {
             return SetResource::collection($search);
         }
-        $result = SetResource::collection(LEGOSet::filter()->sort()->findMany($search->all())->paginate(config('app.default_pagination')));
+        $result = LEGOSet::filter()->sort()->findMany($search->all());
         $maxYear = $result->max('year');
         $minYear = $result->min('year');
         $maxElements = $result->max('num_parts');
         $minElements = $result->min('num_parts');
         $themeIds = array_values($result->pluck('theme_id')->unique()->toArray());
-        
-        return $result->additional([
+        $result = $result->paginate(config('app.default_pagination'));
+
+        return SetResource::collection($result)->additional([
             'max_year' => $maxYear,
             'min_year' => $minYear,
             'max_elements' => $maxElements,

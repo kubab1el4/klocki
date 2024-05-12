@@ -12,19 +12,18 @@ class SetController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-        $result = SetResource::collection(LEGOSet::sort()->filter()->sortFields('year')->paginate(config('app.default_pagination')));
+        $result = LEGOSet::sort()->filter()->sortFields('year')->get();
         $maxYear = $result->max('year');
         $minYear = $result->min('year');
         $maxElements = $result->max('num_parts');
         $minElements = $result->min('num_parts');
-        $themeIds = array_values($result->pluck('theme_id')->unique()->toArray());
+        $result = $result->paginate(config('app.default_pagination'));
 
-        return $result->additional([
+        return SetResource::collection($result)->additional([
             'max_year' => $maxYear,
             'min_year' => $minYear,
             'max_elements' => $maxElements,
             'min_elements' => $minElements,
-            'theme_ids' => $themeIds
         ]);
     }
 
