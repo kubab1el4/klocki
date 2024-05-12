@@ -14,7 +14,7 @@ export const tNavbar = defineMessages({
 
     companyName: {
         id: "f5466306-ece9-4512-84f3-b1cdcc5b7942",
-        defaultMessage: "Klocki w reklamówce",
+        defaultMessage: "Brick Alert",
         description: "Nazwa firmy",
     },
     loginSinginButton: {

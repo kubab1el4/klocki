@@ -1,7 +1,4 @@
-import {
-    ImageNotSupported,
-    NotificationAddOutlined,
-} from "@mui/icons-material";
+import { NotificationAddOutlined } from "@mui/icons-material";
 import { Box, Card, CardContent } from "@mui/material";
 import React, { useRef } from "react";
 import { useIntl } from "react-intl";
@@ -78,15 +75,13 @@ export const Product: React.FC<ProductProps> = ({
                         }}
                     />
                     <Box className="flex justify-center h-36 items-center bg-gray-100 rounded-md">
-                        {imgURL ? (
+                        {
                             <LazyLoadImage
                                 src={`${domain}/api/thumbnail/${setNumber}`}
                                 alt={`image of ${setName} Lego set`}
                                 className="max-w-[100%] max-h-[100%] group-hover:scale-110  transition ease-in-out duration-300 p-3"
                             />
-                        ) : (
-                            <ImageNotSupported />
-                        )}
+                        }
                     </Box>
                     <CardContent>
                         <div>
