@@ -21,7 +21,7 @@ class SearchController extends Controller {
         $minYear = $result->min('year');
         $maxElements = $result->max('num_parts');
         $minElements = $result->min('num_parts');
-        $themeIds = $result->pluck('theme_id')->unique();
+        $themeIds = array_values($result->pluck('theme_id')->unique()->toArray());
         return $result->additional([
             'max_year' => $maxYear,
             'min_year' => $minYear,
