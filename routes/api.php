@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SetController;

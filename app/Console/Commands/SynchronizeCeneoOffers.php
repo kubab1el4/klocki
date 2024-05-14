@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\API\AllegroApiClient;
 use App\Models\Offer;
 use App\Spiders\AllegroSpider;
+use App\Spiders\CeneoSpider;
 use Illuminate\Console\Command;
 use RoachPHP\Roach;
 
@@ -15,21 +16,21 @@ class SynchronizeAllegroOffers extends Command
      *
      * @var string
      */
-    protected $signature = 'synchronize-allegro-offers';
+    protected $signature = 'synchronize-ceneo-offers';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Synchronize allegro offers';
+    protected $description = 'Synchronize ceneo offers';
 
     /**
      * Execute the console command.
      */
     public function handle() {
         dump('Data rozpoczęcia: ' . date('Y-m-d H:i:s'));
-        $items = Roach::collectSpider(AllegroSpider::class);
+        $items = Roach::collectSpider(CeneoSpider::class);
         foreach ($items as $item) {
             $existingOffer = Offer::where('set_id', $item['set_id'])->where('seller', $item['seller'])->first();
             if (!$existingOffer) {

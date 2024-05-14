@@ -17,14 +17,13 @@ use RoachPHP\Spider\BasicSpider;
 use RoachPHP\Spider\ParseResult;
 use Symfony\Component\DomCrawler\Crawler;
 
-class AllegroSpider extends BasicSpider {
+class CeneoSpider extends BasicSpider {
 
     public array $downloaderMiddleware = [
         RequestDeduplicationMiddleware::class,
-        // [
-        //     UserAgentMiddleware::class,['userAgent' => 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Chrome/41.0.2272.96 Safari/537.36'],
-        // ],
-        ExecuteJavascriptMiddleware::class,
+        [
+            UserAgentMiddleware::class,['userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'],
+        ],
     ];
 
     public array $spiderMiddleware = [
@@ -49,7 +48,7 @@ class AllegroSpider extends BasicSpider {
         return [
             new Request (
                 'GET',
-                'https://allegro.pl/kategoria/klocki-lego-17865?string=lego&stan=nowe&offerTypeBuyNow=1',
+                'https://www.ceneo.pl/Klocki_LEGO;szukaj-lego',
                 [$this, 'parse']
             ),
         ];
@@ -60,6 +59,8 @@ class AllegroSpider extends BasicSpider {
      */
     public function parseOffer(Response $response): Generator {
         dd($response->html());
+        if ($response->filter('button[class*=cookie-consent__buttons__action]')->text('default', false) !== 'default') {
+        }
         $title = ' ' . $response->filter('#productTitle')->text('default', true) . ' ';
 
         $matches = [];
@@ -93,19 +94,18 @@ class AllegroSpider extends BasicSpider {
 
     public function parse(Response $response): Generator {
         $pages = [];
-        $response->filter('article')->each(function (Crawler $x) use (&$pages) {
-            $pages[] = $x->filter('h2 > a')->link();
+        $response->filter('.cat-prod-row')->each(function (Crawler $x) use (&$pages) {
+            $pages[] = $x->filter('strong > a')->link();
         });
         foreach ($pages as $page) {
             yield $this->request('GET', $page->getUri(), 'parseOffer');
         }
 
         try {
-            $link = $response->filter('a[class*="s-pagination-next"]')->link();
+            $link = $response->filter('a[class*="pagination__next"]')->link();
             dump($link->getUri());
             yield $this->request('GET', $link->getUri());
         } catch (Exception $e) {
-            dd($e);
         }
     }
 }
