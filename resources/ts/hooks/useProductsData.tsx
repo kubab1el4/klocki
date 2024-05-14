@@ -22,6 +22,20 @@ type ProductType = {
     catalog_price: string;
 };
 
+type metaDataType = {
+    meta?: {
+        current_page: number;
+        from: number;
+        last_page: number;
+    };
+    isLoading?: boolean;
+    max_year?: number;
+    min_year?: number;
+    max_elements?: number;
+    min_elements?: number;
+    theme_ids?: number[];
+};
+
 type ProductsType = {
     data?: ProductType[];
     meta?: {
@@ -35,7 +49,6 @@ type ProductsType = {
     max_elements?: number;
     min_elements?: number;
     theme_ids?: number[];
-    searchQuery: string | null;
 } | null;
 
 enum SortObject {
@@ -51,7 +64,10 @@ export const ProductsDataProvider: FC<ProductsDataProviderProps> = ({
     children,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [products, setProducts] = useState<ProductsType>(null);
+    const [metaData, setMetaData] = useState<metaDataType>({});
+    const [products, setProducts] = useState<ProductType[] | undefined>(
+        undefined
+    );
     const { themeId } = useParams<{ themeId: string }>();
 
     const [searchParams] = useSearchParams({});
@@ -80,12 +96,48 @@ export const ProductsDataProvider: FC<ProductsDataProviderProps> = ({
             .then((data) => data.json())
             .then((data) => {
                 setIsLoading(false);
-                setProducts(data);
+                setProducts(data.data);
+                setMetaData((prevState) => ({ ...prevState, meta: data.meta }));
             });
     }, [fetchQuerry]);
 
+    useEffect(() => {
+        setIsLoading(true);
+
+        fetch(fetchQuerry)
+            .then((data) => data.json())
+            .then((data) => {
+                const {
+                    max_year,
+                    min_year,
+                    max_elements,
+                    min_elements,
+                    theme_ids,
+                } = data;
+                setIsLoading(false);
+                setMetaData({
+                    meta: data.meta,
+                    max_year,
+                    min_year,
+                    max_elements,
+                    min_elements,
+                    theme_ids,
+                });
+            });
+    }, [searchQuery]);
+
     return (
-        <Contex.Provider value={{ ...products, isLoading, searchQuery }}>
+        <Contex.Provider
+            value={{
+                data: products,
+                meta: metaData.meta,
+                isLoading,
+                max_elements: metaData.max_elements,
+                min_elements: metaData.min_elements,
+                max_year: metaData.max_year,
+                min_year: metaData.min_year,
+            }}
+        >
             {children}
         </Contex.Provider>
     );
