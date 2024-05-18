@@ -27,7 +27,14 @@ class SearchController extends Controller {
 
         $elementsPluck = $result->pluck('num_parts');
         $elementsCategories = ['0', '1-99','100-249', '250-499', '500-999', '1000+'];
-        $elementsRet = ['0' => [], '1-99' => [],'100-249' => [], '250-499' => [], '500-999' => [], '1000+' => []];
+        $elementsRet = [
+            '0' => ['number_of_appearances' => 0],
+            '1-99' => ['number_of_appearances' => 0],
+            '100-249' => ['number_of_appearances' => 0],
+            '250-499' => ['number_of_appearances' => 0],
+            '500-999' => ['number_of_appearances' => 0],
+            '1000+' => ['number_of_appearances' => 0]
+        ];
         foreach ($elementsPluck as $elements) {
             $elementsCategory = array_filter($elementsCategories, function($category) use ($elements) {
                 $range = explode('-', $category);
