@@ -3,11 +3,9 @@ import Slider from "@mui/material/Slider";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
-import { getQueryForThemes } from "../../../helpers/getQueryForThemes";
+import { useProducts } from "../../../hooks";
 import { useDebounce } from "../../../hooks/useDebounce";
-import { domain } from "../../../routes/routes";
 import { tProductFilterSidebar } from "./ProductFilterSidebar.t";
 import { SectionHeader } from "./SectionHeader";
 
@@ -17,13 +15,14 @@ function valuetext(value: number) {
 
 export const YearFilter: React.FC = () => {
     const intl = useIntl();
-    const [minYear, setMinYear] = useState<number>(0);
-    const [maxYear, setMaxYear] = useState<number>(0);
-    const [value, setValue] = useState<number[]>([minYear, maxYear]);
+    const products = useProducts();
+
+    const [value, setValue] = useState<number[]>([0, 0]);
     const [yearRangeParams, setYearRangeParams] = useSearchParams();
 
     const setDebounceYear = useDebounce(() => {
         yearRangeParams.set("year", (value as number[]).join(" "));
+        yearRangeParams.set("page", "1");
         setYearRangeParams(yearRangeParams);
     });
 
@@ -31,34 +30,10 @@ export const YearFilter: React.FC = () => {
         setValue(newValue as number[]);
         setDebounceYear();
     };
-    const { themeId } = useParams<{ themeId: string }>();
-    const themesFiltersArray = getQueryForThemes(themeId);
 
     useEffect(() => {
-        const fetchMaxAndMinYear = async () => {
-            const responseMaxYear = await fetch(
-                `${domain}/api/sets?${themesFiltersArray?.join(
-                    "&"
-                )}&sort=year:desc`
-            );
-
-            const responseMinYear = await fetch(
-                `${domain}/api/sets?${themesFiltersArray?.join(
-                    "&"
-                )}&sort=year:asc`
-            );
-
-            const dataMinYear = await responseMinYear.json();
-            const dataMaxYear = await responseMaxYear.json();
-            setMaxYear(dataMaxYear.data[0].year);
-            setMinYear(dataMinYear.data[0].year);
-        };
-        fetchMaxAndMinYear();
-    }, [themeId]);
-
-    useEffect(() => {
-        setValue([minYear, maxYear]);
-    }, [minYear, maxYear]);
+        setValue([products?.min_year || 0, products?.max_year || 0]);
+    }, [products?.min_year, products?.max_year]);
 
     return (
         <div>
@@ -72,8 +47,14 @@ export const YearFilter: React.FC = () => {
                     onChange={handleYearChange}
                     valueLabelDisplay="on"
                     getAriaValueText={valuetext}
-                    min={minYear}
-                    max={maxYear}
+                    min={products?.min_year}
+                    max={products?.max_year}
+                    disabled={
+                        (products?.max_year === 0 &&
+                            products?.min_year === 0) ||
+                        products?.isLoading ||
+                        products?.data?.length === 0
+                    }
                 />
             </Box>
         </div>
