@@ -19,21 +19,25 @@ class SearchController extends Controller {
         $result = LEGOSet::filter()->sort()->findMany($search->all());
 
         $yearsPluck = $result->pluck('year');
-        $yearsRet = [];
+        $years = [];
         foreach ($yearsPluck as $year) {
-            $yearsRet[$year] = ['number_of_appearances' => (!empty($yearsRet[$year]['number_of_appearances']) ? $yearsRet[$year]['number_of_appearances'] + 1 : 1)];
+            $years[$year] = ['number_of_appearances' => (!empty($years[$year]['number_of_appearances']) ? $years[$year]['number_of_appearances'] + 1 : 1)];
+        }
+        $yearsRet = [];
+        foreach($years as $year => $data) {
+            $yearsRet[] = ['year' => $year, 'number_of_appearances' => $data['number_of_appearances']];
         }
         $yearsRet = json_encode($yearsRet);
 
         $elementsPluck = $result->pluck('num_parts');
         $elementsCategories = ['0', '1-99','100-249', '250-499', '500-999', '1000+'];
         $elementsRet = [
-            '0' => ['number_of_appearances' => 0],
-            '1-99' => ['number_of_appearances' => 0],
-            '100-249' => ['number_of_appearances' => 0],
-            '250-499' => ['number_of_appearances' => 0],
-            '500-999' => ['number_of_appearances' => 0],
-            '1000+' => ['number_of_appearances' => 0]
+            ['category' => '0', 'number_of_appearances' => 0],
+            ['category' => '1-99', 'number_of_appearances' => 0],
+            ['category' => '100-249', 'number_of_appearances' => 0],
+            ['category' => '250-499', 'number_of_appearances' => 0],
+            ['category' => '500-999', 'number_of_appearances' => 0],
+            ['category' => '1000+', 'number_of_appearances' => 0]
         ];
         foreach ($elementsPluck as $elements) {
             $elementsCategory = array_filter($elementsCategories, function($category) use ($elements) {
@@ -49,14 +53,18 @@ class SearchController extends Controller {
             if (!empty($elementsCategory)) {
                 $elementsCategory = $elementsCategory[array_key_first($elementsCategory)];
             }
-            $elementsRet[$elementsCategory] = ['number_of_appearances' => (!empty($elementsRet[$elementsCategory]['number_of_appearances']) ? $elementsRet[$elementsCategory]['number_of_appearances'] + 1 : 1)];
+            $categoryIndex = array_search($elementsCategory, $elementsCategories);
+            $elementsRet[$categoryIndex] = ['category' => $elementsCategory, 'number_of_appearances' => (!empty($elementsRet[$categoryIndex]['number_of_appearances']) ? $elementsRet[$categoryIndex]['number_of_appearances'] + 1 : 1)];
         }
         $elementsRet = json_encode($elementsRet);
 
         $themesPluck = $result->pluck('theme_id');
-        $themesRet = [];
+        $themes = [];
         foreach ($themesPluck as $theme) {
-            $themesRet[$theme] = ['number_of_appearances' => (!empty($themesRet[$theme]['number_of_appearances']) ? $themesRet[$theme]['number_of_appearances'] + 1 : 1)];
+            $themes[$theme] = ['number_of_appearances' => (!empty($themes[$theme]['number_of_appearances']) ? $themes[$theme]['number_of_appearances'] + 1 : 1)];
+        }
+        foreach ($themes as $theme => $data) {
+            $themesRet[] = ['theme_id' => $theme, 'number_of_appearances' => $data['number_of_appearances']];
         }
         $themesRet = json_encode($themesRet);
 
