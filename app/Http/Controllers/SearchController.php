@@ -27,7 +27,6 @@ class SearchController extends Controller {
         foreach($years as $year => $data) {
             $yearsRet[] = ['year' => $year, 'number_of_appearances' => $data['number_of_appearances']];
         }
-        $yearsRet = json_encode($yearsRet);
 
         $elementsPluck = $result->pluck('num_parts');
         $elementsCategories = ['0', '1-99','100-249', '250-499', '500-999', '1000+'];
@@ -56,7 +55,6 @@ class SearchController extends Controller {
             $categoryIndex = array_search($elementsCategory, $elementsCategories);
             $elementsRet[$categoryIndex] = ['category' => $elementsCategory, 'number_of_appearances' => (!empty($elementsRet[$categoryIndex]['number_of_appearances']) ? $elementsRet[$categoryIndex]['number_of_appearances'] + 1 : 1)];
         }
-        $elementsRet = json_encode($elementsRet);
 
         $themesPluck = $result->pluck('theme_id');
         $themes = [];
@@ -66,7 +64,6 @@ class SearchController extends Controller {
         foreach ($themes as $theme => $data) {
             $themesRet[] = ['theme_id' => $theme, 'number_of_appearances' => $data['number_of_appearances']];
         }
-        $themesRet = json_encode($themesRet);
 
         $result = $result->paginate(config('app.default_pagination'));
 
