@@ -68,9 +68,9 @@ class SearchController extends Controller {
         $result = $result->paginate(config('app.default_pagination'));
 
         return SetResource::collection($result)->additional([
-            'years' => $yearsRet,
+            'yearsOfAppearance' => $yearsRet,
             'elements' => $elementsRet,
-            'theme_ids' => $themesRet
+            'themes' => $themesRet
         ]);
     }
 
