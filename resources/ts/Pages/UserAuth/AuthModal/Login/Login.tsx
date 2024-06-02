@@ -23,7 +23,7 @@ export const LoginForm: FC<LoginFormProps> = ({ onClickOpenSignupForm }) => {
     const sumbitHanlder = (e: FormEvent) => {
         e.preventDefault();
         loginUser(email, password);
-        querryUser();
+        // querryUser();
     };
 
     return (
