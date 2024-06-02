@@ -1,17 +1,22 @@
-import { CircularProgress, ThemeProvider, createTheme } from "@mui/material";
-import React from "react";
+import { CircularProgress, createTheme, ThemeProvider } from "@mui/material";
+import React, { useEffect } from "react";
 import { IntlProvider } from "react-intl";
 import {
-    Route,
-    RouterProvider,
     createBrowserRouter,
     createRoutesFromElements,
+    Route,
+    RouterProvider,
 } from "react-router-dom";
 import { PageWrapper } from "../Components/PageWrapper/PageWrapper";
-import { productsRoute } from "../routes/routes";
+import { productsRoute, userRoute } from "../routes/routes";
 import { ProductsSection } from "./Products/ProductsSection";
+import { userStore } from "./userStore/user.zustand";
 
 const Main: React.FC = () => {
+    const queryUser = userStore((state) => state.queryUser);
+    useEffect(() => {
+        queryUser();
+    }, []);
     const theme = createTheme({
         palette: {
             primary: {
@@ -30,6 +35,10 @@ const Main: React.FC = () => {
                     element={<ProductsSection />}
                 />
                 <Route path="deals" element={<div>Okazje</div>} />
+                <Route
+                    path={`${userRoute}`}
+                    element={<div>Witaj na swoim profilu</div>}
+                />
             </Route>
         )
     );

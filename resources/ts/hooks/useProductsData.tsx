@@ -29,11 +29,12 @@ type metaDataType = {
         last_page: number;
     };
     isLoading?: boolean;
-    max_year?: number;
-    min_year?: number;
-    max_elements?: number;
-    min_elements?: number;
-    theme_ids?: number[];
+    elements?: { category: string; number_of_appearances: number }[];
+    themes?: { theme_id: string; number_of_appearances: number }[];
+    yearsOfAppearance?: {
+        year: string;
+        number_of_appearances: number;
+    }[];
 };
 
 type ProductsType = {
@@ -44,11 +45,12 @@ type ProductsType = {
         last_page: number;
     };
     isLoading?: boolean;
-    max_year?: number;
-    min_year?: number;
-    max_elements?: number;
-    min_elements?: number;
-    theme_ids?: number[];
+    elements?: { category: string; number_of_appearances: number }[];
+    themes?: { theme_id: string; number_of_appearances: number }[];
+    yearsOfAppearance?: {
+        year: string;
+        number_of_appearances: number;
+    }[];
 } | null;
 
 enum SortObject {
@@ -76,7 +78,6 @@ export const ProductsDataProvider: FC<ProductsDataProviderProps> = ({
     const year = searchParams.get("year");
     const currentPage = searchParams.get("page");
     const sort = searchParams.get("sort") as keyof typeof SortObject;
-    console.log(sort);
 
     const years = year?.split(" ");
     const yearsFiltersString =
@@ -107,24 +108,18 @@ export const ProductsDataProvider: FC<ProductsDataProviderProps> = ({
         fetch(fetchQuerry)
             .then((data) => data.json())
             .then((data) => {
-                const {
-                    max_year,
-                    min_year,
-                    max_elements,
-                    min_elements,
-                    theme_ids,
-                } = data;
+                console.log(data);
+
+                const { elements, themes, yearsOfAppearance, meta } = data;
                 setIsLoading(false);
                 setMetaData({
-                    meta: data.meta,
-                    max_year,
-                    min_year,
-                    max_elements,
-                    min_elements,
-                    theme_ids,
+                    meta,
+                    elements,
+                    themes,
+                    yearsOfAppearance,
                 });
             });
-    }, [searchQuery]);
+    }, [searchQuery, themeId]);
 
     return (
         <Contex.Provider
@@ -136,6 +131,7 @@ export const ProductsDataProvider: FC<ProductsDataProviderProps> = ({
                 min_elements: metaData.min_elements,
                 max_year: metaData.max_year,
                 min_year: metaData.min_year,
+                theme_ids: metaData.theme_ids,
             }}
         >
             {children}
