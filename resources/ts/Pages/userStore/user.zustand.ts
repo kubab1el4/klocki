@@ -13,14 +13,25 @@ const token = document.cookie.split("XSRF-TOKEN=")[1].slice(0, -3);
 export const userStore = create<UserState>()((set) => ({
     user: {},
     queryUser: async () => {
-        const response = await fetch(`${domain}/api/user`, {
-            headers: {
-                Accept: "application/json",
-            },
-        });
-        console.log(response);
-        const data = await response.json();
-        set({ user: data });
+        try {
+            await fetch(`${domain}/sanctum/csrf-cookie`);
+            const response = await fetch(`${domain}/api/user`, {
+                headers: {
+                    Accept: "application/json",
+                },
+            });
+            const data = await response.json();
+            if (data.message) {
+                set({ user: undefined });
+                return;
+            }
+            set({ user: data });
+        } catch (e) {
+            if (e instanceof Error) {
+                set({ user: undefined });
+                console.log(e.message);
+            }
+        }
     },
 
     loginUser: async (email, password) => {

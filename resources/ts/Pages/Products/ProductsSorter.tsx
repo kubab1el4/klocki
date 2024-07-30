@@ -28,7 +28,6 @@ export const ProductSorter = () => {
         { text: intl.formatMessage(tPRoducts.yearDesc), value: "yd" },
         { text: intl.formatMessage(tPRoducts.yearAsc), value: "ya" },
     ];
-    console.log(sortParams);
 
     useEffect(() => {
         setSort(sortParams.get("sort") as SetStateAction<string>);

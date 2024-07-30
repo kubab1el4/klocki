@@ -8,17 +8,17 @@ export const SearchQueryHeader: FC = () => {
     const [searchParams] = useSearchParams();
     const query = searchParams.get("search");
 
-    return (
-        query && (
-            <h2 className="tracking-wider text-2xl font-semibold">
-                {intl.formatMessage(tSearchQueryHeader.headerText, {
-                    value: (
-                        <span className="text-primary-400">
-                            {searchParams.get("search")}
-                        </span>
-                    ),
-                })}
-            </h2>
-        )
+    return query ? (
+        <h2 className="tracking-wider text-2xl font-semibold">
+            {intl.formatMessage(tSearchQueryHeader.headerText, {
+                value: (
+                    <span className="text-primary-400">
+                        {searchParams.get("search")}
+                    </span>
+                ),
+            })}
+        </h2>
+    ) : (
+        <></>
     );
 };

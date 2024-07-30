@@ -23,7 +23,7 @@ const Main: React.FC = () => {
                 main: "#ec4899",
             },
             secondary: {
-                main: "#3f51b5",
+                main: "#f0f0f0",
             },
         },
     });

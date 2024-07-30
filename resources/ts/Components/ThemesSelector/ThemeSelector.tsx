@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { clsx } from "clsx";
 import React from "react";
 import { useNavigate, useParams } from "react-router";
-import { useFetch } from "../../hooks/useFetch";
+import { useProductsDataFetch } from "../../hooks/useProductsDataFetch";
 import { domain, productsRoute } from "../../routes/routes";
 
 type Theme = {
@@ -17,7 +17,7 @@ export const ThemeSelector = () => {
     const scrollRef = React.useRef<HTMLUListElement>(null);
     const navigate = useNavigate();
     const { themeId } = useParams<{ themeId: string }>();
-    const { data } = useFetch(`${domain}/api/themes`);
+    const { data } = useProductsDataFetch(`${domain}/api/themes`);
     const themes = data.data as Theme[];
 
     const currentTheme = themes.find(

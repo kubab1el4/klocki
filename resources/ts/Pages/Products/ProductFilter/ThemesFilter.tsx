@@ -4,27 +4,27 @@ import { FilterList } from "../../../Components/FilterList/FilterList";
 import { useProducts } from "../../../hooks";
 import { tProductFilterSidebar } from "./ProductFilterSidebar.t";
 
-export const YearFilter: React.FC = () => {
+export const ThemesFilter: React.FC = () => {
     const intl = useIntl();
     const products = useProducts();
 
     return (
-        <>
-            {products?.yearsOfAppearance && (
+        <div>
+            {products?.themes && (
                 <FilterList
                     filterTitle={intl.formatMessage(
-                        tProductFilterSidebar.YearHeader
+                        tProductFilterSidebar.themes
                     )}
-                    searchParamKey="year"
-                    options={products.yearsOfAppearance.map(
-                        ({ year, number_of_appearances }) => ({
-                            name: year,
+                    searchParamKey="themeId"
+                    options={products.themes.map(
+                        ({ theme_id, number_of_appearances }) => ({
+                            name: theme_id,
                             number_of_appearances,
-                            id: year,
+                            id: theme_id,
                         })
                     )}
                 />
             )}
-        </>
+        </div>
     );
 };

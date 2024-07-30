@@ -4,23 +4,25 @@ import { FilterList } from "../../../Components/FilterList/FilterList";
 import { useProducts } from "../../../hooks";
 import { tProductFilterSidebar } from "./ProductFilterSidebar.t";
 
-export const YearFilter: React.FC = () => {
+const styles = { hoverStyle: "group-hover:text-primary-400 transition" };
+
+export const ElementsFiler: React.FC = () => {
     const intl = useIntl();
     const products = useProducts();
 
     return (
         <>
-            {products?.yearsOfAppearance && (
+            {products?.elements && (
                 <FilterList
                     filterTitle={intl.formatMessage(
-                        tProductFilterSidebar.YearHeader
+                        tProductFilterSidebar.ELementsHeader
                     )}
-                    searchParamKey="year"
-                    options={products.yearsOfAppearance.map(
-                        ({ year, number_of_appearances }) => ({
-                            name: year,
+                    searchParamKey="elements"
+                    options={products.elements.map(
+                        ({ category, number_of_appearances }, i) => ({
                             number_of_appearances,
-                            id: year,
+                            name: category,
+                            id: category,
                         })
                     )}
                 />

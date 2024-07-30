@@ -20,10 +20,10 @@ export const LoginForm: FC<LoginFormProps> = ({ onClickOpenSignupForm }) => {
         setPassword("");
     };
 
-    const sumbitHanlder = (e: FormEvent) => {
+    const sumbitHanlder = async (e: FormEvent) => {
         e.preventDefault();
-        loginUser(email, password);
-        // querryUser();
+        await loginUser(email, password);
+        await querryUser();
     };
 
     return (

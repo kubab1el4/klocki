@@ -21,4 +21,9 @@ export const tProductFilterSidebar = defineMessages({
         defaultMessage: "Rok wydania",
         description: "Nagłowek filtrowania roku",
     },
+    ELementsHeader: {
+        id: "4bc6ffeb-a521-487d-b2c3-94d271be8c3e",
+        defaultMessage: "Liczba Elementów",
+        description: "Nagłówek filtrowanie ilości elementów",
+    },
 });

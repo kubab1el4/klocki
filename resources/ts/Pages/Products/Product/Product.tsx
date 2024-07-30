@@ -3,7 +3,7 @@ import { Box, Card, CardContent } from "@mui/material";
 import React, { useRef } from "react";
 import { useIntl } from "react-intl";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useFetch } from "../../../hooks/useFetch";
+import { useProductsDataFetch } from "../../../hooks/useProductsDataFetch";
 import { domain } from "../../../routes/routes";
 import { tProduct } from "./Product.t";
 import { ProductPopover } from "./ProductPopover";
@@ -41,7 +41,7 @@ export const Product: React.FC<ProductProps> = ({
         ? `${catalogPrice.slice(2)} zł`
         : "-";
 
-    const { data } = useFetch(
+    const { data } = useProductsDataFetch(
         `${domain}/api/offers?filters[set_id][$eq]=${id}`
     );
     // @ts-ignore

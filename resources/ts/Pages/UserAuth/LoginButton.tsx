@@ -1,5 +1,5 @@
 import PersonIcon from "@mui/icons-material/Person";
-import React, { FC, useRef } from "react";
+import React, { FC, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { tNavbar } from "../../Components/Navbar/navbar.t";
 import { userStore } from "../userStore/user.zustand";
@@ -11,11 +11,11 @@ export const LoginButton: FC = () => {
     const user = userStore((state) => state.user);
     const ref = useRef(null);
 
-    const [authModalOpen, setAuthModalOpen] = React.useState(false);
-    const [userPopoverMenuOpen, setUserPopoverMenuOpen] = React.useState(false);
-    const handelClik = () => {
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [userPopoverMenuOpen, setUserPopoverMenuOpen] = useState(false);
+    const handelClick = () => {
         console.log(user);
-        if (!user.email) {
+        if (!user) {
             setAuthModalOpen(true);
             return;
         }
@@ -29,7 +29,7 @@ export const LoginButton: FC = () => {
         <>
             <button
                 ref={ref}
-                onClick={handelClik}
+                onClick={handelClick}
                 className="w-68 text-sm flex gap-2 bg-primary-400 px-4 py-2 h-8 items-center rounded-2xl hover:bg-primary-200 hover:text-primary transition"
             >
                 {user?.email ? (

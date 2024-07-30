@@ -2,6 +2,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import {
     Button,
+    CircularProgress,
     IconButton,
     InputAdornment,
     TextField,
@@ -46,7 +47,7 @@ export const SingUpForm: FC = () => {
             setPasswordTooShort(false);
             setPasswordNotIdentical(false);
             setIsLoading(true);
-            await fetch(`${domain}/sanctum/csrf-cookie'`);
+            await fetch(`${domain}/sanctum/csrf-cookie`);
 
             const token = document.cookie.split("XSRF-TOKEN=")[1].slice(0, -3);
 
@@ -165,7 +166,11 @@ export const SingUpForm: FC = () => {
                 </p>
 
                 <Button type="submit" variant="contained" className="pt-2">
-                    {intl.formatMessage(tSignup.button)}
+                    {isLoading ? (
+                        <CircularProgress size={20} color="secondary" />
+                    ) : (
+                        intl.formatMessage(tSignup.button)
+                    )}
                 </Button>
             </form>
         </>

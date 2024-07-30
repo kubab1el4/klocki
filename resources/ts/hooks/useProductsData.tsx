@@ -6,7 +6,7 @@ import React, {
     useState,
 } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { getQueryForThemes } from "../helpers/getQueryForThemes";
+import { getQuery } from "../helpers/getQuery";
 import { domain } from "../routes/routes";
 type ProductsDataProviderProps = {
     children: ReactElement;
@@ -73,22 +73,20 @@ export const ProductsDataProvider: FC<ProductsDataProviderProps> = ({
     const { themeId } = useParams<{ themeId: string }>();
 
     const [searchParams] = useSearchParams({});
-    const themesFiltersArray = getQueryForThemes(themeId);
+    const themeIdParams = searchParams.get("themeId");
+    const themesFiltersArray =
+        getQuery("theme_id", themeIdParams || undefined) || [];
     const searchQuery = searchParams.get("search");
     const year = searchParams.get("year");
+    const yearFilterArray = getQuery("year", year || undefined) || [];
     const currentPage = searchParams.get("page");
     const sort = searchParams.get("sort") as keyof typeof SortObject;
 
-    const years = year?.split(" ");
-    const yearsFiltersString =
-        years &&
-        `&filters[year][$between][0]=${years[0]}&filters[year][$between][1]=${years[1]}`;
-
     const fetchQuerry = `${domain}/api/${searchQuery ? "search/" : ""}sets?${
         searchQuery ? `search=${searchQuery}&` : ""
-    }${themesFiltersArray?.join("&")}&sort=${
+    }${themesFiltersArray}&${yearFilterArray}&sort=${
         sort ? `${SortObject[sort]}` : "year:desc"
-    }&${yearsFiltersString}&page=${currentPage}`;
+    }&page=${currentPage}`;
 
     useEffect(() => {
         setIsLoading(true);
@@ -108,18 +106,16 @@ export const ProductsDataProvider: FC<ProductsDataProviderProps> = ({
         fetch(fetchQuerry)
             .then((data) => data.json())
             .then((data) => {
-                console.log(data);
-
                 const { elements, themes, yearsOfAppearance, meta } = data;
                 setIsLoading(false);
                 setMetaData({
                     meta,
-                    elements,
+                    elements: elements.reverse(),
                     themes,
                     yearsOfAppearance,
                 });
             });
-    }, [searchQuery, themeId]);
+    }, [searchQuery]);
 
     return (
         <Contex.Provider
@@ -127,11 +123,9 @@ export const ProductsDataProvider: FC<ProductsDataProviderProps> = ({
                 data: products,
                 meta: metaData.meta,
                 isLoading,
-                max_elements: metaData.max_elements,
-                min_elements: metaData.min_elements,
-                max_year: metaData.max_year,
-                min_year: metaData.min_year,
-                theme_ids: metaData.theme_ids,
+                elements: metaData.elements,
+                themes: metaData.themes,
+                yearsOfAppearance: metaData.yearsOfAppearance,
             }}
         >
             {children}

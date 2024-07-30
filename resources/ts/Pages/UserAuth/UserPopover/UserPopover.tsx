@@ -64,7 +64,8 @@ export const UserPopoveerMenu: FC<{
                 <button
                     className="w-48 text-sm flex justify-center gap-2 bg-primary-400 px-4 py-2 h-8 items-center rounded-2xl hover:bg-primary-200 hover:text-primary transition text-white cursor:pointer"
                     onClick={() => {
-                        user.email && logoutUser(user.email);
+                        (async () =>
+                            user.email && (await logoutUser(user.email)))();
                         onPopoverCLose();
                     }}
                 >
